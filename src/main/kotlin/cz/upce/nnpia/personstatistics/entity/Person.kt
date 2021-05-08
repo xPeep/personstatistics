@@ -3,8 +3,7 @@ package cz.upce.nnpia.personstatistics.entity
 import cz.upce.nnpia.personstatistics.repository.AbstractJpaPersistable
 import javax.persistence.*
 
-@Entity
-@Table(name = "PERSON")
+@Entity(name = "PERSON")
 class Person(
 	@Column(length = 100) var username: String = "",
 	@Column(length = 500) var password: String = "",
@@ -13,5 +12,5 @@ class Person(
 		mappedBy = "id",
 		cascade = [CascadeType.ALL],
 		fetch = FetchType.LAZY
-	) var personMeasurement: MutableSet<PersonMeasurement> = mutableSetOf(),
+	) var personMeasurement: MutableList<PersonMeasurement> = mutableListOf()
 ) : AbstractJpaPersistable<Long>()

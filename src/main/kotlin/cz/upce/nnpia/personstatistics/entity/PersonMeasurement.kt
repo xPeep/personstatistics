@@ -5,8 +5,7 @@ import java.sql.Timestamp
 import java.time.LocalDateTime
 import javax.persistence.*
 
-@Entity
-@Table(name = "PERSON_MEASUREMENT")
+@Entity(name = "PERSON_MEASUREMENT")
 class PersonMeasurement(
 	@Column(length = 500) var timeStamp: LocalDateTime = LocalDateTime.now(),
 	@Column(length = 500) var value: Double = 0.0,
