@@ -9,5 +9,6 @@ import javax.persistence.*
 class PersonMeasurement(
 	@Column(length = 500) var timeStamp: LocalDateTime = LocalDateTime.now(),
 	@Column(length = 500) var value: Double = 0.0,
-	@Enumerated(EnumType.STRING) @Column(length = 50) var type: PersonMeasurementType = PersonMeasurementType.NONE
+	@Enumerated(EnumType.STRING) @Column(length = 50) var type: PersonMeasurementType = PersonMeasurementType.NONE,
+	@ManyToOne(fetch= FetchType.LAZY) var person: Person? = null
 ) : AbstractJpaPersistable<Long>()

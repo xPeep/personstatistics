@@ -7,7 +7,6 @@ import javax.persistence.*
 class Person(
 	@Column(length = 100) var username: String = "",
 	@Column(length = 500) var password: String = "",
-	@OneToOne(cascade = [CascadeType.ALL]) var personInformation: PersonInformation? = null,
 	@OneToMany(
 		mappedBy = "id",
 		cascade = [CascadeType.ALL],

@@ -3,5 +3,5 @@ package cz.upce.nnpia.personstatistics.repository
 import cz.upce.nnpia.personstatistics.entity.PersonMeasurement
 import org.springframework.data.jpa.repository.JpaRepository
 
-interface PersonMeasurementRepository<T> : JpaRepository<PersonMeasurement, T> {
+interface PersonMeasurementRepository : JpaRepository<PersonMeasurement, Long> {
 }

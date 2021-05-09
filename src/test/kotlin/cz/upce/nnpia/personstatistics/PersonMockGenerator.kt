@@ -23,7 +23,6 @@ class PersonMockGenerator {
 		return Person(
 			generateName(4),
 			generateName(5),
-			createPersonalInformation(),
 			mutableListOf(
 				createPersonalMeasurement(),
 				createPersonalMeasurement(),
@@ -39,6 +38,5 @@ class PersonMockGenerator {
 	fun createPersonalMeasurement(): PersonMeasurement {
 		return PersonMeasurement(LocalDateTime.now(), 15.7, PersonMeasurementType.CHEST)
 	}
-
 
 }
