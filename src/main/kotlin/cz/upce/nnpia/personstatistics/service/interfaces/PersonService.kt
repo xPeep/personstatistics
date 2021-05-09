@@ -4,7 +4,7 @@ import cz.upce.nnpia.personstatistics.dto.PersonDto
 
 
 interface PersonService {
-	fun addPerson(person: PersonDto)
+	fun addPerson(personDto: PersonDto)
 	fun removePerson(personId: Long)
 	fun getPerson(personId: Long): PersonDto?
 	fun getAllPersons(): List<PersonDto>

@@ -1,7 +1,6 @@
 package cz.upce.nnpia.personstatistics.service.implementations
 
 import cz.upce.nnpia.personstatistics.dto.PersonDto
-import cz.upce.nnpia.personstatistics.entity.Person
 import cz.upce.nnpia.personstatistics.repository.PersonRepository
 import cz.upce.nnpia.personstatistics.service.interfaces.PersonService
 import org.springframework.beans.factory.annotation.Autowired
@@ -14,20 +13,19 @@ class PersonServiceImpl
 	private val personRepository: PersonRepository
 ) : PersonService {
 
-	override fun addPerson(person: PersonDto) {
-		TODO("Not yet implemented")
+	override fun addPerson(personDto: PersonDto) {
+		personRepository.save(personDto.toEntityClass())
 	}
 
 	override fun removePerson(personId: Long) {
-		TODO("Not yet implemented")
+		personRepository.deleteById(personId)
 	}
 
 	override fun getPerson(personId: Long): PersonDto? {
-		TODO("Not yet implemented")
+		return (personRepository.findByIdOrNull(personId) ?: return null).toDtoClass()
 	}
 
 	override fun getAllPersons(): List<PersonDto> {
-		TODO("Not yet implemented")
+		return personRepository.findAll().map { it.toDtoClass() }
 	}
-
 }

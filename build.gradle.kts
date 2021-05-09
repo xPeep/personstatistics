@@ -32,12 +32,13 @@ dependencies {
 	//implementation("org.flywaydb:flyway-core")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+	implementation("org.junit.jupiter:junit-jupiter:5.7.0")
 	//implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
 	runtimeOnly("com.h2database:h2")
-	//runtimeOnly("org.postgresql:postgresql")
+	runtimeOnly("org.postgresql:postgresql")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
-	testImplementation("junit:junit:4.13.1")
+	//testImplementation("junit:junit:4.13.1")
 	//testImplementation("org.springframework.security:spring-security-test")
 }
 

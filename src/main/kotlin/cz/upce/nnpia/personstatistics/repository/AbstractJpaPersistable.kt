@@ -1,9 +1,8 @@
 package cz.upce.nnpia.personstatistics.repository
 
-import java.io.Serializable
-
 import org.springframework.data.domain.Persistable
 import org.springframework.data.util.ProxyUtils
+import java.io.Serializable
 import javax.persistence.*
 
 @MappedSuperclass

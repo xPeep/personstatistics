@@ -5,9 +5,8 @@ import cz.upce.nnpia.personstatistics.entity.PersonMeasurementType
 import java.time.LocalDateTime
 
 interface PersonMeasurementService {
-	fun addMeasurement(personMeasurementDto: PersonMeasurementDto)
-	fun editMeasurement(personId: Long, personMeasurementDto: PersonMeasurementDto)
-	fun removeMeasurement(personId: Long, personMeasurementId: Long)
+	fun addMeasurement(personId: Long, personMeasurementDto: PersonMeasurementDto)
+	fun removeMeasurement(personMeasurementId: Long)
 	fun getAllMeasurements(personId: Long): List<PersonMeasurementDto>
 	fun getMeasurementsByInterval(
 		personId: Long,
