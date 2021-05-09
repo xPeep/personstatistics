@@ -5,10 +5,10 @@ import cz.upce.nnpia.personstatistics.entity.PersonMeasurementType
 import java.time.LocalDateTime
 
 data class PersonMeasurementDto(
-	val id: Long,
-	val value: Double,
-	val timestamp: LocalDateTime,
-	val type: PersonMeasurementType
+	val id: Long? = null,
+	val value: Double = 0.0,
+	val timestamp: LocalDateTime = LocalDateTime.now(),
+	val type: PersonMeasurementType = PersonMeasurementType.NONE
 ) {
 	fun toEntityClass(): PersonMeasurement {
 		val personMeasurement = PersonMeasurement(timestamp, value, type, null)

@@ -13,8 +13,10 @@ class PersonServiceImpl
 	private val personRepository: PersonRepository
 ) : PersonService {
 
-	override fun addPerson(personDto: PersonDto) {
-		personRepository.save(personDto.toEntityClass())
+	override fun addPerson(personDto: PersonDto): PersonDto {
+		val person = personDto.toEntityClass()
+		personRepository.save(person)
+		return person.toDtoClass()
 	}
 
 	override fun removePerson(personId: Long) {

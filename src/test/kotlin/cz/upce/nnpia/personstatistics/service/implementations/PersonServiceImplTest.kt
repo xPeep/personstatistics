@@ -20,38 +20,32 @@ class PersonServiceImplTest
 
 	@Test
 	fun addPerson() {
-		val person = personalMockGenerator.createPersonal().toDtoClass()
-		personServiceImpl.addPerson(person)
-		val testedPerson = personRepository.findAll().firstOrNull()?.toDtoClass()
-		assertThat(person.username).isEqualTo(testedPerson?.username)
+		val person = personServiceImpl.addPerson(personalMockGenerator.createPersonal())
+		assertThat(person.username).isEqualTo(person.username)
 	}
 
 	@Test
 	fun removePerson() {
-		val person = personalMockGenerator.createPersonal().toDtoClass()
-		personServiceImpl.addPerson(person)
-		val foundPerson = personRepository.findAll().firstOrNull()?.toDtoClass()
-		personServiceImpl.removePerson(foundPerson?.id ?: -1)
+		val person = personServiceImpl.addPerson(personalMockGenerator.createPersonal())
+		personServiceImpl.removePerson(person.id ?: -1)
 		val testedPerson = personRepository.findAll()
 		assertTrue(testedPerson.isEmpty())
 	}
 
 	@Test
 	fun getPerson() {
-		val person = personalMockGenerator.createPersonal().toDtoClass()
-		personServiceImpl.addPerson(person)
-		val foundPerson = personRepository.findAll()[0].toDtoClass()
-		val testedPerson = personServiceImpl.getPerson(foundPerson.id)
+		val person = personServiceImpl.addPerson(personalMockGenerator.createPersonal())
+		val testedPerson = personServiceImpl.getPerson(person.id ?: -1)
 		assertThat(person.username).isEqualTo(testedPerson?.username)
 	}
 
 	@Test
 	fun getAllPersons() {
 		val persons = listOf(
-			personalMockGenerator.createPersonal().toDtoClass(),
-			personalMockGenerator.createPersonal().toDtoClass(),
-			personalMockGenerator.createPersonal().toDtoClass(),
-			personalMockGenerator.createPersonal().toDtoClass()
+			personalMockGenerator.createPersonal(),
+			personalMockGenerator.createPersonal(),
+			personalMockGenerator.createPersonal(),
+			personalMockGenerator.createPersonal()
 		)
 		persons.forEach { person -> personServiceImpl.addPerson(person) }
 		val testedPersons = personServiceImpl.getAllPersons()

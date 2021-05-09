@@ -26,7 +26,7 @@ class PersonRepositoryTest
 
 	@Test
 	fun `should store new user`() {
-		val newUser = personalMockGenerator.createPersonal()
+		val newUser = personalMockGenerator.createPersonal().toEntityClass()
 		val foundUser = creator.save(newUser)
 
 		assertThat(foundUser).isEqualTo(newUser)
@@ -37,7 +37,7 @@ class PersonRepositoryTest
 		val fakeUsers = mutableListOf<Person>()
 
 		for (i in 0..10) {
-			val user = personalMockGenerator.createPersonal()
+			val user = personalMockGenerator.createPersonal().toEntityClass()
 			fakeUsers.add(user)
 			creator.save(user)
 		}
@@ -49,8 +49,8 @@ class PersonRepositoryTest
 
 	@Test
 	fun `should find user by id`() {
-		val firstUser = personalMockGenerator.createPersonal()
-		val secondUser = personalMockGenerator.createPersonal()
+		val firstUser = personalMockGenerator.createPersonal().toEntityClass()
+		val secondUser = personalMockGenerator.createPersonal().toEntityClass()
 
 		creator.save(firstUser)
 		creator.save(secondUser)
@@ -62,9 +62,9 @@ class PersonRepositoryTest
 
 	@Test
 	fun `should delete all users`() {
-		val vipUser = personalMockGenerator.createPersonal()
-		val regularUser = personalMockGenerator.createPersonal()
-		val adminUser = personalMockGenerator.createPersonal()
+		val vipUser = personalMockGenerator.createPersonal().toEntityClass()
+		val regularUser = personalMockGenerator.createPersonal().toEntityClass()
+		val adminUser = personalMockGenerator.createPersonal().toEntityClass()
 
 		creator.save(vipUser)
 		creator.save(regularUser)

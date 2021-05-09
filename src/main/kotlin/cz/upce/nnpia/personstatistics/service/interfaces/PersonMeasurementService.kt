@@ -6,7 +6,7 @@ import java.time.LocalDateTime
 
 interface PersonMeasurementService {
 	fun addMeasurement(personId: Long, personMeasurementDto: PersonMeasurementDto)
-	fun removeMeasurement(personMeasurementId: Long)
+	fun removeMeasurement(personId: Long, personMeasurementId: Long)
 	fun getAllMeasurements(personId: Long): List<PersonMeasurementDto>
 	fun getMeasurementsByInterval(
 		personId: Long,
