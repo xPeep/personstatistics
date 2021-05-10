@@ -16,23 +16,23 @@ class PersonController
 	@ExceptionHandler(RuntimeException::class)
 	fun handleException(): String = "error"
 
-	@PostMapping("/add-person")
-	fun addPerson(personDto: PersonDto) {
+	@PostMapping("/add")
+	fun add(@RequestBody personDto: PersonDto) {
 		personServiceImpl.addPerson(personDto)
 	}
 
-	@GetMapping("/remove-person/{id}")
-	fun removePerson(@PathVariable id: Long) {
+	@GetMapping("/remove/{id}")
+	fun remove(@PathVariable id: Long) {
 		personServiceImpl.removePerson(id)
 	}
 
-	@GetMapping("/get-person/{id}")
-	fun getPerson(@PathVariable id: Long): PersonDto? {
+	@GetMapping("/get/{id}")
+	fun get(@PathVariable id: Long): PersonDto? {
 		return personServiceImpl.getPerson(id)
 	}
 
-	@GetMapping("/get-all-persons")
-	fun getAllPersons(@PathVariable id: Long): List<PersonDto> {
+	@GetMapping("/all")
+	fun all(): List<PersonDto> {
 		return personServiceImpl.getAllPersons()
 	}
 

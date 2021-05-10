@@ -9,7 +9,7 @@ import javax.persistence.*
 class PersonInformation(
 	@Column(length = 100) var firstName: String?,
 	@Column(length = 100) var lastName: String?,
-	@Column(length = 500) var emailAddress: String?,
+	@Column(length = 500, unique=true) var emailAddress: String?,
 	@OneToOne(fetch = FetchType.LAZY) @MapsId var person: Person? = null
 ) : AbstractJpaPersistable<Long>() {
 
