@@ -20,10 +20,9 @@ class PersonInformationServiceImpl
 			?: throw IllegalStateException("Person was not found by id")).toDtoClass()
 	}
 
-	override fun addPersonInformation(personId: Long, personInformationDto: PersonInformationDto) {
+	override fun addPersonInformation(personInformationDto: PersonInformationDto) {
 		val personInformation = personInformationDto.toEntityClass()
-		personInformation.person =
-			personRepository.findByIdOrNull(personId) ?: throw IllegalStateException("Person was not found by id")
+		personInformation.person = personRepository.findByIdOrNull(personInformationDto.id ?: -1)
 		personInformationRepository.save(personInformation)
 	}
 

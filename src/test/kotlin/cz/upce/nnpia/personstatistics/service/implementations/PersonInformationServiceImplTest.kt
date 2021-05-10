@@ -24,8 +24,8 @@ class PersonInformationServiceImplTest
 	fun addPersonInformation() {
 		val person = personalMockGenerator.createPersonal().toEntityClass()
 		personRepository.save(person)
-		val personInformation = personalMockGenerator.createPersonalInformation()
-		personInformationServiceImpl.addPersonInformation(person.id ?: -1, personInformation)
+		val personInformation = personalMockGenerator.createPersonalInformation(person.id ?: -1)
+		personInformationServiceImpl.addPersonInformation(personInformation)
 		val foundPersonInformation = personInformationRepository.findAll().firstOrNull()?.toDtoClass()
 		assertThat(personInformation.emailAddress).isEqualTo(foundPersonInformation?.emailAddress)
 	}
@@ -34,8 +34,8 @@ class PersonInformationServiceImplTest
 	fun getPersonInformation() {
 		val person = personalMockGenerator.createPersonal().toEntityClass()
 		personRepository.save(person)
-		val personInformation = personalMockGenerator.createPersonalInformation()
-		personInformationServiceImpl.addPersonInformation(person.id ?: -1, personInformation)
+		val personInformation = personalMockGenerator.createPersonalInformation(person.id ?: -1)
+		personInformationServiceImpl.addPersonInformation(personInformation)
 		val testedPersonInformation = personInformationServiceImpl.getPersonInformation(person.id ?: -1)
 		assertThat(personInformation.emailAddress).isEqualTo(testedPersonInformation?.emailAddress)
 	}
@@ -44,8 +44,8 @@ class PersonInformationServiceImplTest
 	fun removePersonInformation() {
 		val person = personalMockGenerator.createPersonal().toEntityClass()
 		personRepository.save(person)
-		val personInformation = personalMockGenerator.createPersonalInformation()
-		personInformationServiceImpl.addPersonInformation(person.id ?: -1, personInformation)
+		val personInformation = personalMockGenerator.createPersonalInformation(person.id ?: -1)
+		personInformationServiceImpl.addPersonInformation(personInformation)
 		personInformationServiceImpl.removePersonInformation(person.id ?: -1)
 		val foundPersonInformation = personInformationRepository.findAll()
 		assertTrue(foundPersonInformation.isEmpty())

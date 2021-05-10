@@ -31,8 +31,8 @@ class PersonMockGenerator {
 		)
 	}
 
-	fun createPersonalInformation(): PersonInformationDto {
-		return PersonInformationDto(null, generateName(4), generateName(5), generateName(8))
+	fun createPersonalInformation(id: Long): PersonInformationDto {
+		return PersonInformationDto(id, generateName(4), generateName(5), generateName(8))
 	}
 
 	fun createPersonalMeasurement(): PersonMeasurementDto {
