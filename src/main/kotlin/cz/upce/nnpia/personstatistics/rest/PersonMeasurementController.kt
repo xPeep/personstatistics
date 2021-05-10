@@ -1,6 +1,7 @@
 package cz.upce.nnpia.personstatistics.rest
 
 import cz.upce.nnpia.personstatistics.dto.PersonMeasurementDto
+import cz.upce.nnpia.personstatistics.dto.PersonMeasurementIntervalDto
 import cz.upce.nnpia.personstatistics.entity.PersonMeasurementType
 import cz.upce.nnpia.personstatistics.service.implementations.PersonMeasurementServiceImpl
 import org.springframework.beans.factory.annotation.Autowired
@@ -18,9 +19,9 @@ class PersonMeasurementController
 	@ExceptionHandler(RuntimeException::class)
 	fun handleException(): String = "error"
 
-	@RequestMapping(path = ["/add"], method = [RequestMethod.GET])
-	fun add(@RequestParam personId: Long, @RequestParam personMeasurementDto: PersonMeasurementDto) {
-		personMeasurementServiceImpl.addMeasurement(personId, personMeasurementDto)
+	@PostMapping("/add")
+	fun add(@RequestBody personMeasurementDto: PersonMeasurementDto) {
+		personMeasurementServiceImpl.addMeasurement(personMeasurementDto.personId ?: -1, personMeasurementDto)
 	}
 
 	@GetMapping("/remove/{personId}/{measurementId}")
@@ -33,14 +34,9 @@ class PersonMeasurementController
 		return personMeasurementServiceImpl.getAllMeasurements(personId)
 	}
 
-	@RequestMapping(path = ["/interval"], method = [RequestMethod.GET])
-	fun interval(
-		@RequestParam personId: Long,
-		@RequestParam start: LocalDateTime,
-		@RequestParam end: LocalDateTime,
-		@RequestParam type: List<PersonMeasurementType>
-	): List<PersonMeasurementDto> {
-		return personMeasurementServiceImpl.getMeasurementsByInterval(personId, start, end, type)
+	@PostMapping("/interval")
+	fun interval(@RequestBody personMeasurementIntervalDto: PersonMeasurementIntervalDto): List<PersonMeasurementDto> {
+		return personMeasurementServiceImpl.getMeasurementsByInterval(personMeasurementIntervalDto)
 	}
 
 }

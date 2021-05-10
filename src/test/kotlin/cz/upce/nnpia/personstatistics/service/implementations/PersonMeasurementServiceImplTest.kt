@@ -1,5 +1,6 @@
 package cz.upce.nnpia.personstatistics
 
+import cz.upce.nnpia.personstatistics.dto.PersonMeasurementIntervalDto
 import cz.upce.nnpia.personstatistics.entity.PersonMeasurementType
 import cz.upce.nnpia.personstatistics.repository.PersonMeasurementRepository
 import cz.upce.nnpia.personstatistics.repository.PersonRepository
@@ -106,19 +107,23 @@ class PersonMeasurementServiceImplTest
 		}
 
 		val foundMeasurement = personMeasurementServiceImpl.getMeasurementsByInterval(
-			person.id ?: -1,
-			startDate,
-			endDate,
-			PersonMeasurementType.values().toList()
+			PersonMeasurementIntervalDto(
+				person.id ?: -1,
+				startDate,
+				endDate,
+				PersonMeasurementType.values().toList()
+			)
 		)
 
 		assertTrue(testedPersonMeasurements.map { it.timestamp }.containsAll(foundMeasurement.map { it.timestamp }))
 
 		val foundMeasurementNone = personMeasurementServiceImpl.getMeasurementsByInterval(
-			person.id ?: -1,
-			startDate,
-			endDate,
-			listOf(PersonMeasurementType.NONE)
+			PersonMeasurementIntervalDto(
+				person.id ?: -1,
+				startDate,
+				endDate,
+				listOf(PersonMeasurementType.NONE)
+			)
 		)
 
 		assertTrue(foundMeasurementNone.isEmpty())

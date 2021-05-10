@@ -1,13 +1,12 @@
 package cz.upce.nnpia.personstatistics.service.implementations
 
 import cz.upce.nnpia.personstatistics.dto.PersonMeasurementDto
-import cz.upce.nnpia.personstatistics.entity.PersonMeasurementType
+import cz.upce.nnpia.personstatistics.dto.PersonMeasurementIntervalDto
 import cz.upce.nnpia.personstatistics.repository.PersonRepository
 import cz.upce.nnpia.personstatistics.service.interfaces.PersonMeasurementService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
-import java.time.LocalDateTime
 
 @Service
 class PersonMeasurementServiceImpl
@@ -35,17 +34,16 @@ class PersonMeasurementServiceImpl
 		return person.personMeasurement.map { it.toDtoClass() }
 	}
 
-	override fun getMeasurementsByInterval(
-		personId: Long,
-		start: LocalDateTime,
-		end: LocalDateTime,
-		typeList: List<PersonMeasurementType>
-	): List<PersonMeasurementDto> {
-		val personMeasurement = (personRepository.findByIdOrNull(personId)
+	override fun getMeasurementsByInterval(personMeasurementIntervalDto: PersonMeasurementIntervalDto): List<PersonMeasurementDto> {
+		val personMeasurement = (personRepository.findByIdOrNull(personMeasurementIntervalDto.personId)
 			?: throw IllegalStateException("Person was not found by id")).personMeasurement
 		return personMeasurement
-			.filter { typeList.contains(it.type) }
-			.filter { it.timeStamp?.isAfter(start) == true && it.timeStamp?.isBefore(end) == true }
+			.filter { personMeasurementIntervalDto.typeList.contains(it.type) }
+			.filter {
+				it.timeStamp?.isAfter(personMeasurementIntervalDto.start) == true && it.timeStamp?.isBefore(
+					personMeasurementIntervalDto.end
+				) == true
+			}
 			.map { it.toDtoClass() }
 	}
 
