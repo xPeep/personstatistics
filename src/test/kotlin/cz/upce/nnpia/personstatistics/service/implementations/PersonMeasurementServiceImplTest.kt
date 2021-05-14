@@ -27,7 +27,8 @@ class PersonMeasurementServiceImplTest
 		val person = personalMockGenerator.createPersonal().toEntityClass()
 		personRepository.save(person)
 		val personMeasurement = personalMockGenerator.createPersonalMeasurement()
-		personMeasurementServiceImpl.addMeasurement(person.id ?: -1, personMeasurement)
+		personMeasurement.personId = person.id ?: -1
+		personMeasurementServiceImpl.addMeasurement(personMeasurement)
 		val foundMeasurement = personMeasurementRepository.findAll().firstOrNull()?.toDtoClass()
 		assertThat(personMeasurement.timestamp).isEqualTo(foundMeasurement?.timestamp)
 	}
@@ -45,7 +46,8 @@ class PersonMeasurementServiceImplTest
 		)
 
 		personMeasurements.forEach { personMeasurement ->
-			personMeasurementServiceImpl.addMeasurement(person.id ?: -1, personMeasurement)
+			personMeasurement.personId = person.id ?: -1
+			personMeasurementServiceImpl.addMeasurement(personMeasurement)
 		}
 
 		val foundMeasurement = personMeasurementServiceImpl.getAllMeasurements(person.id ?: -1)
@@ -72,7 +74,8 @@ class PersonMeasurementServiceImplTest
 		)
 
 		personMeasurements.forEach { personMeasurement ->
-			personMeasurementServiceImpl.addMeasurement(person.id ?: -1, personMeasurement)
+			personMeasurement.personId = person.id ?: -1
+			personMeasurementServiceImpl.addMeasurement(personMeasurement)
 		}
 
 		val foundMeasurement = personMeasurementServiceImpl.getAllMeasurements(person.id ?: -1)
@@ -103,7 +106,8 @@ class PersonMeasurementServiceImplTest
 		)
 
 		personMeasurements.forEach { personMeasurement ->
-			personMeasurementServiceImpl.addMeasurement(person.id ?: -1, personMeasurement)
+			personMeasurement.personId = person.id ?: -1
+			personMeasurementServiceImpl.addMeasurement(personMeasurement)
 		}
 
 		val foundMeasurement = personMeasurementServiceImpl.getMeasurementsByInterval(

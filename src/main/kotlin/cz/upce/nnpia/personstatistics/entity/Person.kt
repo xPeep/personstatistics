@@ -7,7 +7,7 @@ import javax.persistence.*
 @Entity(name = "Person")
 @Table(name = "person")
 class Person(
-	@Column(length = 100, unique=true) var username: String?,
+	@Column(length = 100, unique = true) var username: String?,
 	@Column(length = 500) var password: String?,
 	@OneToMany(
 		mappedBy = "person",

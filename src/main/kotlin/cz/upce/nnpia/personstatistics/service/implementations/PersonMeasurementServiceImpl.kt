@@ -14,10 +14,12 @@ class PersonMeasurementServiceImpl
 	private val personRepository: PersonRepository
 ) : PersonMeasurementService {
 
-	override fun addMeasurement(personId: Long, personMeasurementDto: PersonMeasurementDto) {
+	override fun addMeasurement(personMeasurementDto: PersonMeasurementDto) {
 		val person =
-			personRepository.findByIdOrNull(personId) ?: throw IllegalStateException("Person was not found by id")
-		person.personMeasurement.add(personMeasurementDto.toEntityClass())
+			personRepository.findByIdOrNull(personMeasurementDto.personId) ?: throw IllegalStateException("Person was not found by id")
+		val personMeasurementDtoLocal = personMeasurementDto.toEntityClass()
+		person.personMeasurement.add(personMeasurementDtoLocal)
+		personMeasurementDtoLocal.person = person
 		personRepository.save(person)
 	}
 

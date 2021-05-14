@@ -23,23 +23,43 @@ repositories {
 	mavenCentral()
 }
 
+val jsonwebtokenVersion = "0.11.2"
+val jaxbLibs = "2.3.2"
+
 dependencies {
+	//jwt
+	implementation("io.jsonwebtoken:jjwt-api:$jsonwebtokenVersion")
+	runtimeOnly("io.jsonwebtoken:jjwt-impl:$jsonwebtokenVersion")
+	runtimeOnly("io.jsonwebtoken:jjwt-jackson:$jsonwebtokenVersion")
+
+	implementation("jakarta.xml.bind:jakarta.xml.bind-api:$jaxbLibs")
+	implementation("org.glassfish.jaxb:jaxb-runtime:$jaxbLibs")
+
+	//guava
+	implementation("com.google.guava:guava:29.0-jre")
+
+	//spring boot
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	implementation("org.springframework.boot:spring-boot-starter-mustache")
-	//implementation("org.springframework.boot:spring-boot-starter-security")
+	implementation("org.springframework.boot:spring-boot-starter-security")
 	implementation("org.springframework.boot:spring-boot-starter-web")
+	developmentOnly("org.springframework.boot:spring-boot-devtools")
+
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
-	//implementation("org.flywaydb:flyway-core")
+
+	//class kotlin
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 	implementation("org.junit.jupiter:junit-jupiter:5.7.0")
-	//implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
-	developmentOnly("org.springframework.boot:spring-boot-devtools")
+
+	// database
 	runtimeOnly("com.h2database:h2")
 	runtimeOnly("org.postgresql:postgresql")
-	testImplementation("org.springframework.boot:spring-boot-starter-test")
-	//testImplementation("junit:junit:4.13.1")
-	//testImplementation("org.springframework.security:spring-security-test")
+
+	annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
+	testImplementation("org.springframework.boot:spring-boot-starter-test") {
+		exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
+	}
 }
 
 tasks.withType<KotlinCompile> {

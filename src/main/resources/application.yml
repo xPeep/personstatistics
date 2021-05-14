@@ -20,3 +20,8 @@ spring:
         format:
           sql: true
     show-sql: true
+  jwt:
+    secret-key: "8^}S3(N}[Z&N7`v.A|3yU/ImWr!2MQV.+Ig>3:=PxndqR0I#1P=PpKiUy`wzXl%"
+    token-prefix: "Bearer "
+    token-expiration-after-days: 10
+    authorities: authorities

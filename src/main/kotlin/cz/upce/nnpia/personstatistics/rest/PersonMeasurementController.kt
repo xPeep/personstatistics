@@ -2,11 +2,9 @@ package cz.upce.nnpia.personstatistics.rest
 
 import cz.upce.nnpia.personstatistics.dto.PersonMeasurementDto
 import cz.upce.nnpia.personstatistics.dto.PersonMeasurementIntervalDto
-import cz.upce.nnpia.personstatistics.entity.PersonMeasurementType
 import cz.upce.nnpia.personstatistics.service.implementations.PersonMeasurementServiceImpl
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
-import java.time.LocalDateTime
 
 @RestController
 @RequestMapping("api/person-measurement")
@@ -21,7 +19,7 @@ class PersonMeasurementController
 
 	@PostMapping("/add")
 	fun add(@RequestBody personMeasurementDto: PersonMeasurementDto) {
-		personMeasurementServiceImpl.addMeasurement(personMeasurementDto.personId ?: -1, personMeasurementDto)
+		personMeasurementServiceImpl.addMeasurement(personMeasurementDto)
 	}
 
 	@GetMapping("/remove/{personId}/{measurementId}")
@@ -34,7 +32,7 @@ class PersonMeasurementController
 		return personMeasurementServiceImpl.getAllMeasurements(personId)
 	}
 
-	@PostMapping("/interval")
+	@GetMapping("/interval")
 	fun interval(@RequestBody personMeasurementIntervalDto: PersonMeasurementIntervalDto): List<PersonMeasurementDto> {
 		return personMeasurementServiceImpl.getMeasurementsByInterval(personMeasurementIntervalDto)
 	}

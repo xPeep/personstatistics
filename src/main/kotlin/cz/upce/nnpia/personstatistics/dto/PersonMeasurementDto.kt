@@ -9,7 +9,7 @@ data class PersonMeasurementDto(
 	val value: Double = 0.0,
 	val timestamp: LocalDateTime = LocalDateTime.now(),
 	val type: PersonMeasurementType = PersonMeasurementType.NONE,
-	val personId: Long? = null
+	var personId: Long? = null
 ) {
 	fun toEntityClass(): PersonMeasurement {
 		val personMeasurement = PersonMeasurement(timestamp, value, type, null)
