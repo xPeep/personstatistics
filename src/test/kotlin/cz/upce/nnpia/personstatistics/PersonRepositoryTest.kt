@@ -5,11 +5,15 @@ import cz.upce.nnpia.personstatistics.repository.PersonRepository
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
+import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.context.annotation.ComponentScan
 import org.springframework.data.repository.findByIdOrNull
+import org.springframework.test.annotation.DirtiesContext
+import org.springframework.test.context.ActiveProfiles
 
-@DataJpaTest
+@SpringBootTest
+@ActiveProfiles("test")
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @ComponentScan
 @ExperimentalStdlibApi
 class PersonRepositoryTest

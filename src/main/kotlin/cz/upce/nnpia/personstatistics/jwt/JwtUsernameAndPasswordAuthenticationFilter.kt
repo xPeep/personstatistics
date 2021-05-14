@@ -56,7 +56,7 @@ class JwtUsernameAndPasswordAuthenticationFilter(
                 .setSubject(authResult.name)
                 .claim(jwtConfig.authorities, authResult.authorities)
                 .setIssuedAt(Date())
-                .setExpiration(java.sql.Date.valueOf(LocalDate.now().plusWeeks(jwtConfig.tokenExpirationAfterDays)))
+                .setExpiration(java.sql.Date.valueOf(LocalDate.now().plusWeeks(jwtConfig.tokenExpirationAfterDays?: throw IllegalStateException("Token expiration after days not found."))))
                 .signWith(secretKey)
                 .compact()
     }

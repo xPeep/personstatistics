@@ -6,10 +6,14 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
+import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.context.annotation.ComponentScan
+import org.springframework.test.annotation.DirtiesContext
+import org.springframework.test.context.ActiveProfiles
 
-@DataJpaTest
+@SpringBootTest
+@ActiveProfiles("test")
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @ComponentScan
 class PersonServiceImplTest
 @Autowired constructor(
@@ -47,6 +51,7 @@ class PersonServiceImplTest
 			personalMockGenerator.createPersonal(),
 			personalMockGenerator.createPersonal()
 		)
+
 		persons.forEach { person -> personServiceImpl.addPerson(person) }
 		val testedPersons = personServiceImpl.getAllPersons()
 		assertTrue(persons.map { it.username }.containsAll(testedPersons.map { it.username }))

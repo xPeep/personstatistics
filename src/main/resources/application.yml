@@ -1,16 +1,6 @@
 spring:
-  datasource:
-    #url: jdbc:h2:file:~/h2/apph2db
-    #url: jdbc:postgresql://0.0.0.0:5432/test
-    url: jdbc:postgresql://0.0.0.0:5432/test
-    #url: jdbc:h2:mem:testdb
-    username: postgres
-    password: password
-    #driverClassName: org.h2.Driver
-  h2:
-    console:
-      enabled: false
-      path: /h2_console
+  profiles:
+    active: develop
   jpa:
     open-in-view: true
     hibernate:
@@ -20,8 +10,31 @@ spring:
         format:
           sql: true
     show-sql: true
+application:
   jwt:
     secret-key: "8^}S3(N}[Z&N7`v.A|3yU/ImWr!2MQV.+Ig>3:=PxndqR0I#1P=PpKiUy`wzXl%"
     token-prefix: "Bearer "
     token-expiration-after-days: 10
     authorities: authorities
+
+---
+spring:
+  jpa:
+    database: postgresql
+  datasource:
+    url: jdbc:postgresql://0.0.0.0:5432/test
+    username: postgres
+    password: password
+  config:
+    activate:
+      on-profile: develop
+---
+spring:
+  jpa:
+    database: h2
+  datasource:
+    url: jdbc:h2:mem:testdb
+  config:
+    activate:
+      on-profile: test
+---

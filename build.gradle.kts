@@ -29,6 +29,7 @@ val jaxbLibs = "2.3.2"
 dependencies {
 	//jwt
 	implementation("io.jsonwebtoken:jjwt-api:$jsonwebtokenVersion")
+	implementation("junit:junit:4.13.1")
 	runtimeOnly("io.jsonwebtoken:jjwt-impl:$jsonwebtokenVersion")
 	runtimeOnly("io.jsonwebtoken:jjwt-jackson:$jsonwebtokenVersion")
 
@@ -57,9 +58,7 @@ dependencies {
 	runtimeOnly("org.postgresql:postgresql")
 
 	annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
-	testImplementation("org.springframework.boot:spring-boot-starter-test") {
-		exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
-	}
+	testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
 
 tasks.withType<KotlinCompile> {

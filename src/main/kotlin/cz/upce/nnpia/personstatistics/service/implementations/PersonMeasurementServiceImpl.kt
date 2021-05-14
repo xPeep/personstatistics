@@ -7,6 +7,7 @@ import cz.upce.nnpia.personstatistics.service.interfaces.PersonMeasurementServic
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 @Service
 class PersonMeasurementServiceImpl
@@ -14,15 +15,18 @@ class PersonMeasurementServiceImpl
 	private val personRepository: PersonRepository
 ) : PersonMeasurementService {
 
+	@Transactional
 	override fun addMeasurement(personMeasurementDto: PersonMeasurementDto) {
 		val person =
-			personRepository.findByIdOrNull(personMeasurementDto.personId) ?: throw IllegalStateException("Person was not found by id")
+			personRepository.findByIdOrNull(personMeasurementDto.personId)
+				?: throw IllegalStateException("Person was not found by id")
 		val personMeasurementDtoLocal = personMeasurementDto.toEntityClass()
 		person.personMeasurement.add(personMeasurementDtoLocal)
 		personMeasurementDtoLocal.person = person
 		personRepository.save(person)
 	}
 
+	@Transactional
 	override fun removeMeasurement(personId: Long, personMeasurementId: Long) {
 		val person =
 			personRepository.findByIdOrNull(personId) ?: throw IllegalStateException("Person was not found by id")
@@ -30,12 +34,14 @@ class PersonMeasurementServiceImpl
 		personRepository.save(person)
 	}
 
+	@Transactional
 	override fun getAllMeasurements(personId: Long): List<PersonMeasurementDto> {
 		val person =
 			personRepository.findByIdOrNull(personId) ?: throw IllegalStateException("Person was not found by id")
 		return person.personMeasurement.map { it.toDtoClass() }
 	}
 
+	@Transactional
 	override fun getMeasurementsByInterval(personMeasurementIntervalDto: PersonMeasurementIntervalDto): List<PersonMeasurementDto> {
 		val personMeasurement = (personRepository.findByIdOrNull(personMeasurementIntervalDto.personId)
 			?: throw IllegalStateException("Person was not found by id")).personMeasurement

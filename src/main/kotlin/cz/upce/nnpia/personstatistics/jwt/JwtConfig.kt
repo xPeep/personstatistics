@@ -3,7 +3,7 @@ package cz.upce.nnpia.personstatistics.jwt
 import com.google.common.net.HttpHeaders
 import org.springframework.boot.context.properties.ConfigurationProperties
 
-@ConfigurationProperties(prefix = "spring.jwt")
+@ConfigurationProperties(prefix = "application.jwt")
 data class JwtConfig(
         var secretKey: String = "",
         var tokenPrefix: String = "",

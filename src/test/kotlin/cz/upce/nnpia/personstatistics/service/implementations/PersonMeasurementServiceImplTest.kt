@@ -9,10 +9,14 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
+import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.context.annotation.ComponentScan
+import org.springframework.test.annotation.DirtiesContext
+import org.springframework.test.context.ActiveProfiles
 
-@DataJpaTest
+@SpringBootTest
+@ActiveProfiles("test")
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @ComponentScan
 class PersonMeasurementServiceImplTest
 @Autowired constructor(
@@ -30,7 +34,7 @@ class PersonMeasurementServiceImplTest
 		personMeasurement.personId = person.id ?: -1
 		personMeasurementServiceImpl.addMeasurement(personMeasurement)
 		val foundMeasurement = personMeasurementRepository.findAll().firstOrNull()?.toDtoClass()
-		assertThat(personMeasurement.timestamp).isEqualTo(foundMeasurement?.timestamp)
+		assertThat(personMeasurement.value).isEqualTo(foundMeasurement?.value)
 	}
 
 	@Test
@@ -80,7 +84,7 @@ class PersonMeasurementServiceImplTest
 
 		val foundMeasurement = personMeasurementServiceImpl.getAllMeasurements(person.id ?: -1)
 
-		assertTrue(personMeasurements.map { it.timestamp }.containsAll(foundMeasurement.map { it.timestamp }))
+		assertTrue(personMeasurements.map { it.value }.containsAll(foundMeasurement.map { it.value }))
 	}
 
 	@Test
@@ -119,7 +123,7 @@ class PersonMeasurementServiceImplTest
 			)
 		)
 
-		assertTrue(testedPersonMeasurements.map { it.timestamp }.containsAll(foundMeasurement.map { it.timestamp }))
+		assertTrue(testedPersonMeasurements.map { it.value }.containsAll(foundMeasurement.map { it.value }))
 
 		val foundMeasurementNone = personMeasurementServiceImpl.getMeasurementsByInterval(
 			PersonMeasurementIntervalDto(

@@ -7,6 +7,7 @@ import cz.upce.nnpia.personstatistics.service.interfaces.PersonInformationServic
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 @Service
 class PersonInformationServiceImpl
@@ -15,17 +16,20 @@ class PersonInformationServiceImpl
 	private val personInformationRepository: PersonInformationRepository
 ) : PersonInformationService {
 
+	@Transactional
 	override fun getPersonInformation(personId: Long): PersonInformationDto? {
 		return (personInformationRepository.findByIdOrNull(personId)
 			?: throw IllegalStateException("Person was not found by id")).toDtoClass()
 	}
 
+	@Transactional
 	override fun addPersonInformation(personInformationDto: PersonInformationDto) {
 		val personInformation = personInformationDto.toEntityClass()
 		personInformation.person = personRepository.findByIdOrNull(personInformationDto.id ?: -1)
 		personInformationRepository.save(personInformation)
 	}
 
+	@Transactional
 	override fun removePersonInformation(personId: Long) {
 		personInformationRepository.deleteById(personId)
 	}

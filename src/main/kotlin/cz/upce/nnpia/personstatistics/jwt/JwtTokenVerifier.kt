@@ -14,49 +14,55 @@ import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
 class JwtTokenVerifier(
-        private val secretKey: SecretKey,
-        private val jwtConfig: JwtConfig
+	private val secretKey: SecretKey,
+	private val jwtConfig: JwtConfig
 ) : OncePerRequestFilter() {
 
-    override fun doFilterInternal(request: HttpServletRequest,
-                                  response: HttpServletResponse,
-                                  filterChain: FilterChain
-    ) {
-        val authorizationHeader = request.getHeader(jwtConfig.getAuthorizationHeader())
+	override fun doFilterInternal(
+		request: HttpServletRequest,
+		response: HttpServletResponse,
+		filterChain: FilterChain
+	) {
+		val authorizationHeader = request.getHeader(jwtConfig.getAuthorizationHeader())
 
-        if (!Strings.isNullOrEmpty(authorizationHeader) && authorizationHeader.startsWith(jwtConfig.tokenPrefix)) {
+		if (!Strings.isNullOrEmpty(authorizationHeader) && authorizationHeader.startsWith(
+				jwtConfig.tokenPrefix ?: throw IllegalStateException("Token prefix not found.")
+			)
+		) {
 
-            val token = authorizationHeader.replace(jwtConfig.tokenPrefix, "")
+			val token = authorizationHeader.replace(
+				jwtConfig.tokenPrefix ?: throw IllegalStateException("Token prefix not found."), ""
+			)
 
-            try {
+			try {
 
-                val claimsJws = Jwts.parserBuilder()
-                        .setSigningKey(secretKey).build()
-                        .parseClaimsJws(token)
+				val claimsJws = Jwts.parserBuilder()
+					.setSigningKey(secretKey).build()
+					.parseClaimsJws(token)
 
-                val body = claimsJws.body
+				val body = claimsJws.body
 
-                val username = body.subject
+				val username = body.subject
 
-                val authorities = body["authorities"] as List<Map<String, String>>
+				val authorities = body["authorities"] as List<Map<String, String>>
 
-                val simpleGrantedAuthority = authorities
-                        .stream()
-                        .map { item -> SimpleGrantedAuthority(item["authority"]) }
-                        .collect(Collectors.toSet())
+				val simpleGrantedAuthority = authorities
+					.stream()
+					.map { item -> SimpleGrantedAuthority(item["authority"]) }
+					.collect(Collectors.toSet())
 
-                val authentication = UsernamePasswordAuthenticationToken(
-                        username,
-                        null,
-                        simpleGrantedAuthority
-                )
+				val authentication = UsernamePasswordAuthenticationToken(
+					username,
+					null,
+					simpleGrantedAuthority
+				)
 
-                SecurityContextHolder.getContext().authentication = authentication
+				SecurityContextHolder.getContext().authentication = authentication
 
-            } catch (e: JwtException) {
-                throw IllegalStateException(String.format("Token %s cannot be trusted", token))
-            }
-        }
-        filterChain.doFilter(request, response)
-    }
+			} catch (e: JwtException) {
+				throw IllegalStateException(String.format("Token %s cannot be trusted", token))
+			}
+		}
+		filterChain.doFilter(request, response)
+	}
 }
