@@ -44,7 +44,7 @@ class ApplicationSecurityConfig(
 				JwtUsernameAndPasswordAuthenticationFilter::class.java
 			)
 			.authorizeRequests()
-			.antMatchers("/", "index", "/css/*", "/js/*").permitAll()
+			.antMatchers("/", "index", "/css/*", "/js/*", "/api/user/add").permitAll()
 			//.antMatchers("/api/**").hasRole(ApplicationUserRole.USER.name)
 			.anyRequest()
 			.authenticated()

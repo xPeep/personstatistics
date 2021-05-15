@@ -2,6 +2,7 @@ package cz.upce.nnpia.personstatistics.rest
 
 import cz.upce.nnpia.personstatistics.auth.IAuthenticationFacade
 import cz.upce.nnpia.personstatistics.dto.UserDto
+import cz.upce.nnpia.personstatistics.security.UserRole
 import cz.upce.nnpia.personstatistics.service.implementations.UserService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.access.prepost.PreAuthorize
@@ -25,8 +26,8 @@ class UserController
 	}
 
 	@PostMapping("/add")
-	@PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
 	fun add(@RequestBody userDto: UserDto) {
+		userDto.role = UserRole.USER
 		userService.addUser(userDto)
 	}
 
