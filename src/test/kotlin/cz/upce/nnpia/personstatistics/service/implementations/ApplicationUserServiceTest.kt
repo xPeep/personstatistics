@@ -1,7 +1,7 @@
 package cz.upce.nnpia.personstatistics
 
-import cz.upce.nnpia.personstatistics.repository.PersonRepository
-import cz.upce.nnpia.personstatistics.service.implementations.PersonServiceImpl
+import cz.upce.nnpia.personstatistics.repository.ApplicationUserRepository
+import cz.upce.nnpia.personstatistics.service.implementations.UserService
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
@@ -15,32 +15,32 @@ import org.springframework.test.context.ActiveProfiles
 @ActiveProfiles("test")
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @ComponentScan
-class PersonServiceImplTest
+class ApplicationUserServiceTest
 @Autowired constructor(
 	private val personalMockGenerator: PersonMockGenerator,
-	private val personServiceImpl: PersonServiceImpl,
-	private val personRepository: PersonRepository,
+	private val userService: UserService,
+	private val applicationUserRepository: ApplicationUserRepository,
 ) {
 
 	@Test
 	fun addPerson() {
-		val person = personServiceImpl.addPerson(personalMockGenerator.createPersonal())
+		val person = userService.addUser(personalMockGenerator.createPersonal())
 		assertThat(person.username).isEqualTo(person.username)
 	}
 
 	@Test
 	fun removePerson() {
-		val person = personServiceImpl.addPerson(personalMockGenerator.createPersonal())
-		personServiceImpl.removePerson(person.id ?: -1)
-		val testedPerson = personRepository.findAll()
+		val person = userService.addUser(personalMockGenerator.createPersonal())
+		userService.removeById(person.id ?: -1)
+		val testedPerson = applicationUserRepository.findAll()
 		assertTrue(testedPerson.isEmpty())
 	}
 
 	@Test
 	fun getPerson() {
-		val person = personServiceImpl.addPerson(personalMockGenerator.createPersonal())
-		val testedPerson = personServiceImpl.getPerson(person.id ?: -1)
-		assertThat(person.username).isEqualTo(testedPerson?.username)
+		val person = userService.addUser(personalMockGenerator.createPersonal())
+		val testedPerson = userService.getById(person.id ?: -1)
+		assertThat(person.username).isEqualTo(testedPerson.username)
 	}
 
 	@Test
@@ -52,8 +52,8 @@ class PersonServiceImplTest
 			personalMockGenerator.createPersonal()
 		)
 
-		persons.forEach { person -> personServiceImpl.addPerson(person) }
-		val testedPersons = personServiceImpl.getAllPersons()
+		persons.forEach { person -> userService.addUser(person) }
+		val testedPersons = userService.getAll()
 		assertTrue(persons.map { it.username }.containsAll(testedPersons.map { it.username }))
 	}
 }

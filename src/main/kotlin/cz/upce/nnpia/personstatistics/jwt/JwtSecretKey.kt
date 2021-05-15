@@ -7,12 +7,12 @@ import javax.crypto.SecretKey
 
 @Configuration
 class JwtSecretKey(
-        val jwtConfig: JwtConfig
+	val jwtConfig: JwtConfig
 ) {
 
-    @Bean
-    fun secretKey(): SecretKey {
-        return Keys.hmacShaKeyFor(jwtConfig.secretKey.toByteArray())
-    }
+	@Bean
+	fun secretKey(): SecretKey {
+		return Keys.hmacShaKeyFor(jwtConfig.secretKey.toByteArray())
+	}
 
 }

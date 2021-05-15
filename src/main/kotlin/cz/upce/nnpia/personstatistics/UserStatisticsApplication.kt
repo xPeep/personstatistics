@@ -7,8 +7,8 @@ import org.springframework.boot.runApplication
 
 @SpringBootApplication
 @ConfigurationPropertiesScan
-class PersonStatisticsApplication
+class UserStatisticsApplication
 
 fun main(args: Array<String>) {
-	runApplication<PersonStatisticsApplication>(*args)
+	runApplication<UserStatisticsApplication>(*args)
 }

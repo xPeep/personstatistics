@@ -1,9 +1,9 @@
 package cz.upce.nnpia.personstatistics.security
 
-import cz.upce.nnpia.personstatistics.auth.ApplicationUserService
 import cz.upce.nnpia.personstatistics.jwt.JwtConfig
 import cz.upce.nnpia.personstatistics.jwt.JwtTokenVerifier
 import cz.upce.nnpia.personstatistics.jwt.JwtUsernameAndPasswordAuthenticationFilter
+import cz.upce.nnpia.personstatistics.service.implementations.UserService
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpStatus
@@ -25,51 +25,54 @@ import javax.crypto.SecretKey
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 class ApplicationSecurityConfig(
-    val passwordEncoder: PasswordEncoder,
-    val applicationUserService: ApplicationUserService,
-    val secretKey: SecretKey,
-    val jwtConfig: JwtConfig
+	val passwordEncoder: PasswordEncoder,
+	val userService: UserService,
+	val secretKey: SecretKey,
+	val jwtConfig: JwtConfig
 ) : WebSecurityConfigurerAdapter() {
 
-    override fun configure(http: HttpSecurity) {
-        http
-                //.cors().and()
-                .csrf().disable()
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .addFilter(JwtUsernameAndPasswordAuthenticationFilter(authenticationManager(), jwtConfig, secretKey))
-                .addFilterAfter(JwtTokenVerifier(secretKey, jwtConfig), JwtUsernameAndPasswordAuthenticationFilter::class.java)
-                .authorizeRequests()
-                .antMatchers("/", "index", "/css/*", "/js/*").permitAll()
-                //.antMatchers("/api/**").hasRole(ApplicationUserRole.USER.name)
-                .anyRequest()
-                .authenticated()
-                .and()
-                .exceptionHandling()
-                .authenticationEntryPoint(HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
-    }
+	override fun configure(http: HttpSecurity) {
+		http
+			//.cors().and()
+			.csrf().disable()
+			.sessionManagement()
+			.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+			.and()
+			.addFilter(JwtUsernameAndPasswordAuthenticationFilter(authenticationManager(), jwtConfig, secretKey))
+			.addFilterAfter(
+				JwtTokenVerifier(secretKey, jwtConfig),
+				JwtUsernameAndPasswordAuthenticationFilter::class.java
+			)
+			.authorizeRequests()
+			.antMatchers("/", "index", "/css/*", "/js/*").permitAll()
+			//.antMatchers("/api/**").hasRole(ApplicationUserRole.USER.name)
+			.anyRequest()
+			.authenticated()
+			.and()
+			.exceptionHandling()
+			.authenticationEntryPoint(HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
+	}
 
-    @Throws(Exception::class)
-    override fun configure(auth: AuthenticationManagerBuilder) {
-        auth.authenticationProvider(daoAuthenticationProvider())
-    }
+	@Throws(Exception::class)
+	override fun configure(auth: AuthenticationManagerBuilder) {
+		auth.authenticationProvider(daoAuthenticationProvider())
+	}
 
-    @Bean
-    fun corsConfigurationSource(): CorsConfigurationSource {
-        val source = UrlBasedCorsConfigurationSource()
-        val config = CorsConfiguration()
-        config.applyPermitDefaultValues()
-        config.addAllowedMethod("DELETE")
-        source.registerCorsConfiguration("/**", config)
-        return source
-    }
+	@Bean
+	fun corsConfigurationSource(): CorsConfigurationSource {
+		val source = UrlBasedCorsConfigurationSource()
+		val config = CorsConfiguration()
+		config.applyPermitDefaultValues()
+		config.addAllowedMethod("DELETE")
+		source.registerCorsConfiguration("/**", config)
+		return source
+	}
 
-    @Bean
-    fun daoAuthenticationProvider(): DaoAuthenticationProvider {
-        val provider = DaoAuthenticationProvider()
-        provider.setPasswordEncoder(passwordEncoder)
-        provider.setUserDetailsService(applicationUserService)
-        return provider
-    }
+	@Bean
+	fun daoAuthenticationProvider(): DaoAuthenticationProvider {
+		val provider = DaoAuthenticationProvider()
+		provider.setPasswordEncoder(passwordEncoder)
+		provider.setUserDetailsService(userService)
+		return provider
+	}
 }

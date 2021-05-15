@@ -1,7 +1,7 @@
 package cz.upce.nnpia.personstatistics
 
-import cz.upce.nnpia.personstatistics.entity.Person
-import cz.upce.nnpia.personstatistics.repository.PersonRepository
+import cz.upce.nnpia.personstatistics.entity.ApplicationUser
+import cz.upce.nnpia.personstatistics.repository.ApplicationUserRepository
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -16,16 +16,16 @@ import org.springframework.test.context.ActiveProfiles
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @ComponentScan
 @ExperimentalStdlibApi
-class PersonRepositoryTest
+class ApplicationApplicationUserRepositoryTest
 @Autowired constructor(
 	private val creator: Creator,
-	private val personRepository: PersonRepository,
+	private val applicationUserRepository: ApplicationUserRepository,
 	private val personalMockGenerator: PersonMockGenerator
 ) {
 
 	@Test
 	fun `should not find any user`() {
-		assertThat(personRepository.findAll()).isEmpty()
+		assertThat(applicationUserRepository.findAll()).isEmpty()
 	}
 
 	@Test
@@ -38,7 +38,7 @@ class PersonRepositoryTest
 
 	@Test
 	fun `should find all users`() {
-		val fakeUsers = mutableListOf<Person>()
+		val fakeUsers = mutableListOf<ApplicationUser>()
 
 		for (i in 0..10) {
 			val user = personalMockGenerator.createPersonal().toEntityClass()
@@ -46,7 +46,7 @@ class PersonRepositoryTest
 			creator.save(user)
 		}
 
-		assertThat(personRepository.findAll())
+		assertThat(applicationUserRepository.findAll())
 			.hasSize(fakeUsers.size)
 			.containsAll(fakeUsers)
 	}
@@ -59,7 +59,7 @@ class PersonRepositoryTest
 		creator.save(firstUser)
 		creator.save(secondUser)
 
-		val foundUser = personRepository.findByIdOrNull(secondUser.id)
+		val foundUser = applicationUserRepository.findByIdOrNull(secondUser.id)
 
 		assertThat(foundUser).isEqualTo(secondUser)
 	}
@@ -74,9 +74,9 @@ class PersonRepositoryTest
 		creator.save(regularUser)
 		creator.save(adminUser)
 
-		personRepository.deleteAll()
+		applicationUserRepository.deleteAll()
 
-		assertThat(personRepository.findAll()).isEmpty()
+		assertThat(applicationUserRepository.findAll()).isEmpty()
 	}
 
 }

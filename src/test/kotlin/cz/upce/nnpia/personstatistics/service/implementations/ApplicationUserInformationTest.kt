@@ -1,14 +1,12 @@
 package cz.upce.nnpia.personstatistics
 
-import cz.upce.nnpia.personstatistics.repository.PersonInformationRepository
-import cz.upce.nnpia.personstatistics.repository.PersonRepository
-import cz.upce.nnpia.personstatistics.service.implementations.PersonInformationServiceImpl
+import cz.upce.nnpia.personstatistics.repository.ApplicationUserRepository
+import cz.upce.nnpia.personstatistics.repository.UserInformationRepository
+import cz.upce.nnpia.personstatistics.service.implementations.UserInformation
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.context.annotation.ComponentScan
 import org.springframework.test.annotation.DirtiesContext
@@ -18,42 +16,42 @@ import org.springframework.test.context.ActiveProfiles
 @ActiveProfiles("test")
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @ComponentScan
-class PersonInformationServiceImplTest
+class ApplicationUserInformationTest
 @Autowired constructor(
 	private val personalMockGenerator: PersonMockGenerator,
-	private val personRepository: PersonRepository,
-	private val personInformationRepository: PersonInformationRepository,
-	private val personInformationServiceImpl: PersonInformationServiceImpl,
+	private val applicationUserRepository: ApplicationUserRepository,
+	private val userInformationRepository: UserInformationRepository,
+	private val userInformation: UserInformation,
 ) {
 
 	@Test
 	fun addPersonInformation() {
 		val person = personalMockGenerator.createPersonal().toEntityClass()
-		personRepository.save(person)
+		applicationUserRepository.save(person)
 		val personInformation = personalMockGenerator.createPersonalInformation(person.id ?: -1)
-		personInformationServiceImpl.addPersonInformation(personInformation)
-		val foundPersonInformation = personInformationRepository.findAll().firstOrNull()?.toDtoClass()
+		userInformation.add(personInformation)
+		val foundPersonInformation = userInformationRepository.findAll().firstOrNull()?.toDtoClass()
 		assertThat(personInformation.emailAddress).isEqualTo(foundPersonInformation?.emailAddress)
 	}
 
 	@Test
 	fun getPersonInformation() {
 		val person = personalMockGenerator.createPersonal().toEntityClass()
-		personRepository.save(person)
+		applicationUserRepository.save(person)
 		val personInformation = personalMockGenerator.createPersonalInformation(person.id ?: -1)
-		personInformationServiceImpl.addPersonInformation(personInformation)
-		val testedPersonInformation = personInformationServiceImpl.getPersonInformation(person.id ?: -1)
-		assertThat(personInformation.emailAddress).isEqualTo(testedPersonInformation?.emailAddress)
+		userInformation.add(personInformation)
+		val testedPersonInformation = userInformation.getById(person.id ?: -1)
+		assertThat(personInformation.emailAddress).isEqualTo(testedPersonInformation.emailAddress)
 	}
 
 	@Test
 	fun removePersonInformation() {
 		val person = personalMockGenerator.createPersonal().toEntityClass()
-		personRepository.save(person)
+		applicationUserRepository.save(person)
 		val personInformation = personalMockGenerator.createPersonalInformation(person.id ?: -1)
-		personInformationServiceImpl.addPersonInformation(personInformation)
-		personInformationServiceImpl.removePersonInformation(person.id ?: -1)
-		val foundPersonInformation = personInformationRepository.findAll()
+		userInformation.add(personInformation)
+		userInformation.removeById(person.id ?: -1)
+		val foundPersonInformation = userInformationRepository.findAll()
 		assertTrue(foundPersonInformation.isEmpty())
 	}
 

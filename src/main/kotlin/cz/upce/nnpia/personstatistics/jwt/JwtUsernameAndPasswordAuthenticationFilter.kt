@@ -21,44 +21,52 @@ class JwtUsernameAndPasswordAuthenticationFilter(
 	private val secretKey: SecretKey
 ) : UsernamePasswordAuthenticationFilter() {
 
-    //TODO Renew token
+	override fun attemptAuthentication(request: HttpServletRequest, response: HttpServletResponse): Authentication {
 
-    override fun attemptAuthentication(request: HttpServletRequest, response: HttpServletResponse): Authentication {
+		try {
+			val authenticationRequest =
+				jacksonObjectMapper().readValue<UsernameAndPasswordAuthenticationRequest>(request.inputStream)
 
-        try {
-            val authenticationRequest = jacksonObjectMapper().readValue<UsernameAndPasswordAuthenticationRequest>(request.inputStream)
+			return authenticationManagerLocal.authenticate(
+				UsernamePasswordAuthenticationToken(
+					authenticationRequest.username,
+					authenticationRequest.password
+				)
+			)
+		} catch (e: IOException) {
+			throw RuntimeException(e)
+		}
 
-            return authenticationManagerLocal.authenticate(
-                    UsernamePasswordAuthenticationToken(
-                            authenticationRequest.username,
-                            authenticationRequest.password
-                    )
-            )
-        } catch (e: IOException) {
-            throw RuntimeException(e)
-        }
+	}
 
-    }
-
-    override fun successfulAuthentication(
-            request: HttpServletRequest,
-            response: HttpServletResponse,
-            chain: FilterChain,
-            authResult: Authentication
-    ) {
-        response.addHeader(jwtConfig.getAuthorizationHeader(),
-                jwtConfig.tokenPrefix + generateToken(authResult))
-    }
+	override fun successfulAuthentication(
+		request: HttpServletRequest,
+		response: HttpServletResponse,
+		chain: FilterChain,
+		authResult: Authentication
+	) {
+		response.addHeader(
+			jwtConfig.getAuthorizationHeader(),
+			jwtConfig.tokenPrefix + generateToken(authResult)
+		)
+	}
 
 
-    private fun generateToken(authResult: Authentication): String {
-        return Jwts.builder()
-                .setSubject(authResult.name)
-                .claim(jwtConfig.authorities, authResult.authorities)
-                .setIssuedAt(Date())
-                .setExpiration(java.sql.Date.valueOf(LocalDate.now().plusWeeks(jwtConfig.tokenExpirationAfterDays?: throw IllegalStateException("Token expiration after days not found."))))
-                .signWith(secretKey)
-                .compact()
-    }
+	private fun generateToken(authResult: Authentication): String {
+		return Jwts.builder()
+			.setSubject(authResult.name)
+			.claim(jwtConfig.authorities, authResult.authorities)
+			.setIssuedAt(Date())
+			.setExpiration(
+				java.sql.Date.valueOf(
+					LocalDate.now().plusWeeks(
+						jwtConfig.tokenExpirationAfterDays
+							?: throw IllegalStateException("Token expiration after days not found.")
+					)
+				)
+			)
+			.signWith(secretKey)
+			.compact()
+	}
 
 }

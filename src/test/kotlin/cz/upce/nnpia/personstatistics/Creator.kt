@@ -60,7 +60,11 @@ class Creator(
 						field.returnType.isSubtypeOf(typeOf<Date?>()) -> Date(System.currentTimeMillis())
 						field.returnType.isSubtypeOf(typeOf<Long?>()) -> 1L
 						field.returnType.isSubtypeOf(typeOf<Set<*>?>()) -> mutableSetOf<Any>()
-						else -> (field.returnType.classifier as KClass<*>).createInstance()
+						else -> try {
+							(field.returnType.classifier as KClass<*>).createInstance()
+						} catch (e: Exception) {
+							null
+						}
 					}
 					(field as KMutableProperty1<*, *>).setter.call(entity, propValue)
 				}
