@@ -9,7 +9,6 @@ import org.springframework.data.repository.findByIdOrNull
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.crypto.password.PasswordEncoder
-import org.springframework.stereotype.Repository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -34,7 +33,8 @@ class UserService
 
 	@Transactional
 	override fun getById(id: Long): UserDto {
-		return (applicationUserRepository.findByIdOrNull(id) ?: throw IllegalStateException("User by id not found")).toDtoClass()
+		return (applicationUserRepository.findByIdOrNull(id)
+			?: throw IllegalStateException("User by id not found")).toDtoClass()
 	}
 
 	@Transactional
@@ -49,7 +49,8 @@ class UserService
 	}
 
 	override fun loadUserByUsername(username: String): UserDetails {
-		val userDetails = getByUsername(username).toEntityClass()
+		val userDetails = applicationUserRepository.findByUsername(username)
+			?: throw IllegalStateException("User by username not found")
 		userDetails.password = passwordEncoder.encode(userDetails.password)
 		return CustomUserDetails(userDetails)
 	}

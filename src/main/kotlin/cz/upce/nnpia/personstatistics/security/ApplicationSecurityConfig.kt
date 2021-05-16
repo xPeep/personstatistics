@@ -19,6 +19,7 @@ import org.springframework.security.web.authentication.HttpStatusEntryPoint
 import org.springframework.web.cors.CorsConfiguration
 import org.springframework.web.cors.CorsConfigurationSource
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource
+import java.util.*
 import javax.crypto.SecretKey
 
 @Configuration
@@ -33,7 +34,7 @@ class ApplicationSecurityConfig(
 
 	override fun configure(http: HttpSecurity) {
 		http
-			//.cors().and()
+			.cors().and()
 			.csrf().disable()
 			.sessionManagement()
 			.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
@@ -53,6 +54,8 @@ class ApplicationSecurityConfig(
 			.authenticationEntryPoint(HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
 	}
 
+
+
 	@Throws(Exception::class)
 	override fun configure(auth: AuthenticationManagerBuilder) {
 		auth.authenticationProvider(daoAuthenticationProvider())
@@ -62,9 +65,8 @@ class ApplicationSecurityConfig(
 	fun corsConfigurationSource(): CorsConfigurationSource {
 		val source = UrlBasedCorsConfigurationSource()
 		val config = CorsConfiguration()
-		config.applyPermitDefaultValues()
-		config.addAllowedMethod("DELETE")
-		source.registerCorsConfiguration("/**", config)
+		source.registerCorsConfiguration("/**", config.applyPermitDefaultValues())
+		config.exposedHeaders = listOf("Authorization")
 		return source
 	}
 
