@@ -1,17 +1,31 @@
 package cz.upce.nnpia.personstatistics.dto
 
 import cz.upce.nnpia.personstatistics.entity.ApplicationUser
+import cz.upce.nnpia.personstatistics.entity.UserMeasurement
+import cz.upce.nnpia.personstatistics.entity.UserMedia
 import cz.upce.nnpia.personstatistics.security.UserRole
 
-class UserDto(
-	var id: Long? = null,
-	var username: String? = null,
-	var password: String? = null,
-	var role: UserRole? = null
+data class UserDto(
+	val id: Long?,
+	val username: String,
+	val password: String,
+	val firstName: String,
+	val lastName: String,
+	val emailAddress: String,
+	var role: UserRole,
+	val userMedia: MutableList<UserMedia>,
+	val userMeasurement: MutableList<UserMeasurement>,
 ) {
 	fun toEntityClass(): ApplicationUser {
-		val user = ApplicationUser(username, password, role)
-		user.id = id
-		return user
+		return ApplicationUser(
+			this.username,
+			this.password,
+			this.role,
+			this.firstName,
+			this.lastName,
+			this.emailAddress,
+			this.userMeasurement,
+			this.userMedia
+		)
 	}
 }

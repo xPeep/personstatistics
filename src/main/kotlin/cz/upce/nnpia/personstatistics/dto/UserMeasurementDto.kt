@@ -1,19 +1,32 @@
 package cz.upce.nnpia.personstatistics.dto
 
 import cz.upce.nnpia.personstatistics.entity.UserMeasurement
-import cz.upce.nnpia.personstatistics.entity.UserMeasurementType
 import java.time.LocalDateTime
 
 data class UserMeasurementDto(
 	val id: Long? = null,
-	val value: Double = 0.0,
-	val timestamp: LocalDateTime = LocalDateTime.now(),
-	val type: UserMeasurementType = UserMeasurementType.NONE,
+	val timestamp: LocalDateTime,
+	val weight: Double?,
+	val abdomenSize: Double?,
+	val leftHandSize: Double?,
+	val rightHandSize: Double?,
+	val rightLeftSize: Double?,
+	val rightRightSize: Double?,
+	val chestSize: Double?,
 	var userId: Long? = null
 ) {
 	fun toEntityClass(): UserMeasurement {
-		val userMeasurement = UserMeasurement(timestamp, value, type, null)
-		userMeasurement.id = id
+		val userMeasurement = UserMeasurement(
+			this.timestamp,
+			this.weight,
+			this.abdomenSize,
+			this.leftHandSize,
+			this.rightHandSize,
+			this.rightLeftSize,
+			this.rightRightSize,
+			this.chestSize
+		)
+		userMeasurement.id = this.id
 		return userMeasurement
 	}
 }

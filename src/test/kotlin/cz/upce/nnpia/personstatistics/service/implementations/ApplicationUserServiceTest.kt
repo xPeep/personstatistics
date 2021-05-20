@@ -4,23 +4,29 @@ import cz.upce.nnpia.personstatistics.repository.ApplicationUserRepository
 import cz.upce.nnpia.personstatistics.service.implementations.UserService
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.context.annotation.ComponentScan
-import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ActiveProfiles
+import javax.persistence.EntityManager
 
 @SpringBootTest
 @ActiveProfiles("test")
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @ComponentScan
 class ApplicationUserServiceTest
 @Autowired constructor(
 	private val personalMockGenerator: PersonMockGenerator,
 	private val userService: UserService,
-	private val applicationUserRepository: ApplicationUserRepository,
+	private val applicationUserRepository: ApplicationUserRepository
 ) {
+
+	@BeforeEach
+	fun clean() {
+		applicationUserRepository.deleteAll()
+	}
 
 	@Test
 	fun addPerson() {

@@ -2,7 +2,7 @@ package cz.upce.nnpia.personstatistics.rest
 
 import cz.upce.nnpia.personstatistics.dto.UserMeasurementDto
 import cz.upce.nnpia.personstatistics.dto.UserMeasurementIntervalDto
-import cz.upce.nnpia.personstatistics.service.implementations.UserMeasurement
+import cz.upce.nnpia.personstatistics.service.implementations.UserMeasurementService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*
 @CrossOrigin("*")
 class UserMeasurementController
 @Autowired constructor(
-	private val userMeasurement: UserMeasurement
+	private val userMeasurementService: UserMeasurementService
 ) {
 
 	@ExceptionHandler(RuntimeException::class)
@@ -21,25 +21,25 @@ class UserMeasurementController
 	@PostMapping("/add")
 	@PreAuthorize("hasRole('ROLE_USER')")
 	fun add(@RequestBody userMeasurementDto: UserMeasurementDto) {
-		userMeasurement.add(userMeasurementDto)
+		userMeasurementService.add(userMeasurementDto)
 	}
 
 	@GetMapping("/remove/{personId}/{measurementId}")
 	@PreAuthorize("hasRole('ROLE_USER')")
-	fun remove(@PathVariable personId: Long, @PathVariable measurementId: Long) {
-		userMeasurement.removeById(personId, measurementId)
+	fun remove(@PathVariable measurementId: Long) {
+		userMeasurementService.removeById(measurementId)
 	}
 
 	@GetMapping("/get/{personId}")
 	@PreAuthorize("hasRole('ROLE_USER')")
 	fun all(@PathVariable personId: Long): List<UserMeasurementDto> {
-		return userMeasurement.getAll(personId)
+		return userMeasurementService.getAll(personId)
 	}
 
 	@GetMapping("/interval")
 	@PreAuthorize("hasRole('ROLE_USER')")
 	fun interval(@RequestBody userMeasurementIntervalDto: UserMeasurementIntervalDto): List<UserMeasurementDto> {
-		return userMeasurement.getMeasurementsByInterval(userMeasurementIntervalDto)
+		return userMeasurementService.getMeasurementsByInterval(userMeasurementIntervalDto)
 	}
 
 }

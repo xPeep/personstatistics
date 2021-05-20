@@ -1,9 +1,9 @@
 package cz.upce.nnpia.personstatistics
 
 import cz.upce.nnpia.personstatistics.dto.UserDto
-import cz.upce.nnpia.personstatistics.dto.UserInformationDto
 import cz.upce.nnpia.personstatistics.dto.UserMeasurementDto
-import cz.upce.nnpia.personstatistics.entity.UserMeasurementType
+import cz.upce.nnpia.personstatistics.dto.UserMediaDto
+import cz.upce.nnpia.personstatistics.security.UserRole
 import org.springframework.stereotype.Component
 import java.lang.Math.random
 import java.time.LocalDateTime
@@ -28,28 +28,44 @@ class PersonMockGenerator {
 			null,
 			generateName(5),
 			generateName(5),
+			generateName(5),
+			generateName(5),
+			generateName(5),
+			UserRole.USER,
+			mutableListOf(),
+			mutableListOf()
 		)
 	}
 
-	fun createPersonalInformation(id: Long): UserInformationDto {
-		return UserInformationDto(id, generateName(4), generateName(5), generateName(8), mutableListOf())
+	fun createUserMedia(id: Long): UserMediaDto {
+		return UserMediaDto(id, null)
 	}
 
 	fun createPersonalMeasurement(): UserMeasurementDto {
 		return UserMeasurementDto(
 			null,
-			random().roundToInt().toDouble(),
 			LocalDateTime.now(),
-			UserMeasurementType.CHEST
+			random().roundToInt().toDouble(),
+			random().roundToInt().toDouble(),
+			random().roundToInt().toDouble(),
+			random().roundToInt().toDouble(),
+			random().roundToInt().toDouble(),
+			random().roundToInt().toDouble(),
+			random().roundToInt().toDouble()
 		)
 	}
 
 	fun createPersonalMeasurement(dateString: String): UserMeasurementDto {
 		return UserMeasurementDto(
 			null,
-			random().roundToInt().toDouble(),
 			createLocalDateTimeFromString(dateString),
-			UserMeasurementType.CHEST
+			random().roundToInt().toDouble(),
+			random().roundToInt().toDouble(),
+			random().roundToInt().toDouble(),
+			random().roundToInt().toDouble(),
+			random().roundToInt().toDouble(),
+			random().roundToInt().toDouble(),
+			random().roundToInt().toDouble()
 		)
 	}
 

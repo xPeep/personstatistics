@@ -2,24 +2,38 @@ package cz.upce.nnpia.personstatistics.entity
 
 import cz.upce.nnpia.personstatistics.dto.UserMeasurementDto
 import cz.upce.nnpia.personstatistics.repository.AbstractJpaPersistable
+import org.hibernate.annotations.UpdateTimestamp
 import java.time.LocalDateTime
-import javax.persistence.*
+import javax.persistence.Column
+import javax.persistence.Entity
+import javax.persistence.FetchType
+import javax.persistence.ManyToOne
 
-@Entity(name = "UserMeasurement")
-@Table(name = "user_measurement")
+@Entity
 class UserMeasurement(
-	@Column(length = 500) var timeStamp: LocalDateTime?,
-	@Column(length = 500) var value: Double?,
-	@Enumerated(EnumType.STRING) @Column(length = 50) var type: UserMeasurementType?,
-	@ManyToOne(fetch = FetchType.LAZY) var userInformation: UserInformation? = null
+	@Column(columnDefinition = "TIMESTAMP")
+	@UpdateTimestamp var timeStamp: LocalDateTime,
+	@Column(nullable = true) var weight: Double?,
+	@Column(nullable = true) var abdomenSize: Double?,
+	@Column(nullable = true) var leftHandSize: Double?,
+	@Column(nullable = true) var rightHandSize: Double?,
+	@Column(nullable = true) var rightLeftSize: Double?,
+	@Column(nullable = true) var rightRightSize: Double?,
+	@Column(nullable = true) var chestSize: Double?,
+	@ManyToOne(fetch = FetchType.LAZY) var applicationUser: ApplicationUser? = null
 ) : AbstractJpaPersistable<Long>() {
 
 	fun toDtoClass(): UserMeasurementDto {
 		return UserMeasurementDto(
-			this.id ?: -1,
-			this.value ?: 0.0,
-			this.timeStamp ?: LocalDateTime.now(),
-			this.type ?: UserMeasurementType.NONE
+			this.id,
+			this.timeStamp,
+			this.weight,
+			this.abdomenSize,
+			this.leftHandSize,
+			this.rightHandSize,
+			this.rightLeftSize,
+			this.rightRightSize,
+			this.chestSize
 		)
 	}
 }
