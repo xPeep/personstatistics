@@ -2,7 +2,7 @@ package cz.upce.nnpia.personstatistics
 
 import cz.upce.nnpia.personstatistics.dto.UserDto
 import cz.upce.nnpia.personstatistics.dto.UserMeasurementDto
-import cz.upce.nnpia.personstatistics.dto.UserMediaDto
+import cz.upce.nnpia.personstatistics.dto.UserPhotoDto
 import cz.upce.nnpia.personstatistics.security.UserRole
 import org.springframework.stereotype.Component
 import java.lang.Math.random
@@ -37,8 +37,8 @@ class PersonMockGenerator {
 		)
 	}
 
-	fun createUserMedia(id: Long): UserMediaDto {
-		return UserMediaDto(id, null)
+	fun createUserMedia(id: Long): UserPhotoDto {
+		return UserPhotoDto(id, LocalDateTime.now(), generateName(5))
 	}
 
 	fun createPersonalMeasurement(): UserMeasurementDto {

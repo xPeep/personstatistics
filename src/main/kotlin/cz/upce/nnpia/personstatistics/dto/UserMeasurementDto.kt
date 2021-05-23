@@ -1,5 +1,6 @@
 package cz.upce.nnpia.personstatistics.dto
 
+import cz.upce.nnpia.personstatistics.entity.ApplicationUser
 import cz.upce.nnpia.personstatistics.entity.UserMeasurement
 import java.time.LocalDateTime
 
@@ -15,7 +16,7 @@ data class UserMeasurementDto(
 	val chestSize: Double?,
 	var userId: Long? = null
 ) {
-	fun toEntityClass(): UserMeasurement {
+	fun toEntityClass(applicationUser: ApplicationUser): UserMeasurement {
 		val userMeasurement = UserMeasurement(
 			this.timestamp,
 			this.weight,
@@ -24,7 +25,8 @@ data class UserMeasurementDto(
 			this.rightHandSize,
 			this.rightLeftSize,
 			this.rightRightSize,
-			this.chestSize
+			this.chestSize,
+			applicationUser
 		)
 		userMeasurement.id = this.id
 		return userMeasurement

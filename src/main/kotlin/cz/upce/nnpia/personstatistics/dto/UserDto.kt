@@ -2,7 +2,7 @@ package cz.upce.nnpia.personstatistics.dto
 
 import cz.upce.nnpia.personstatistics.entity.ApplicationUser
 import cz.upce.nnpia.personstatistics.entity.UserMeasurement
-import cz.upce.nnpia.personstatistics.entity.UserMedia
+import cz.upce.nnpia.personstatistics.entity.UserPhoto
 import cz.upce.nnpia.personstatistics.security.UserRole
 
 data class UserDto(
@@ -13,7 +13,7 @@ data class UserDto(
 	val lastName: String,
 	val emailAddress: String,
 	var role: UserRole,
-	val userMedia: MutableList<UserMedia>,
+	val userPhoto: MutableList<UserPhoto>,
 	val userMeasurement: MutableList<UserMeasurement>,
 ) {
 	fun toEntityClass(): ApplicationUser {
@@ -25,7 +25,7 @@ data class UserDto(
 			this.lastName,
 			this.emailAddress,
 			this.userMeasurement,
-			this.userMedia
+			this.userPhoto
 		)
 	}
 }

@@ -11,8 +11,7 @@ import javax.persistence.ManyToOne
 
 @Entity
 class UserMeasurement(
-	@Column(columnDefinition = "TIMESTAMP")
-	@UpdateTimestamp var timeStamp: LocalDateTime,
+	@Column(columnDefinition = "TIMESTAMP") var timeStamp: LocalDateTime,
 	@Column(nullable = true) var weight: Double?,
 	@Column(nullable = true) var abdomenSize: Double?,
 	@Column(nullable = true) var leftHandSize: Double?,
@@ -33,7 +32,8 @@ class UserMeasurement(
 			this.rightHandSize,
 			this.rightLeftSize,
 			this.rightRightSize,
-			this.chestSize
+			this.chestSize,
+			this.applicationUser?.id
 		)
 	}
 }

@@ -1,17 +1,17 @@
 package cz.upce.nnpia.personstatistics
 
 import cz.upce.nnpia.personstatistics.repository.ApplicationUserRepository
+import cz.upce.nnpia.personstatistics.repository.UserMeasurementRepository
+import cz.upce.nnpia.personstatistics.repository.UserPhotoRepository
 import cz.upce.nnpia.personstatistics.service.implementations.UserService
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.context.annotation.ComponentScan
 import org.springframework.test.context.ActiveProfiles
-import javax.persistence.EntityManager
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -20,11 +20,15 @@ class ApplicationUserServiceTest
 @Autowired constructor(
 	private val personalMockGenerator: PersonMockGenerator,
 	private val userService: UserService,
-	private val applicationUserRepository: ApplicationUserRepository
+	private val applicationUserRepository: ApplicationUserRepository,
+	private val userPhotoRepository: UserPhotoRepository,
+	private val userMeasurementRepository: UserMeasurementRepository
 ) {
 
 	@BeforeEach
 	fun clean() {
+		userPhotoRepository.deleteAll()
+		userMeasurementRepository.deleteAll()
 		applicationUserRepository.deleteAll()
 	}
 
@@ -60,6 +64,6 @@ class ApplicationUserServiceTest
 
 		persons.forEach { person -> userService.addUser(person) }
 		val testedPersons = userService.getAll()
-		assertTrue(persons.map { it.username }.containsAll(testedPersons.map { it.username }))
+		assertTrue(testedPersons.map { it.username }.containsAll(persons.map { it.username }))
 	}
 }

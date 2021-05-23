@@ -1,6 +1,8 @@
 package cz.upce.nnpia.personstatistics.service.implementations
 
+import cz.upce.nnpia.personstatistics.auth.IAuthenticationFacade
 import cz.upce.nnpia.personstatistics.dto.UserDto
+import cz.upce.nnpia.personstatistics.entity.ApplicationUser
 import cz.upce.nnpia.personstatistics.repository.ApplicationUserRepository
 import cz.upce.nnpia.personstatistics.service.interfaces.IUserService
 import org.springframework.beans.factory.annotation.Autowired
@@ -14,8 +16,19 @@ import org.springframework.stereotype.Service
 class UserService
 @Autowired constructor(
 	private val applicationUserRepository: ApplicationUserRepository,
-	private val passwordEncoder: PasswordEncoder
+	private val passwordEncoder: PasswordEncoder,
+	private val authenticationFacade: IAuthenticationFacade
 ) : IUserService, UserDetailsService {
+
+	fun getUserById(userId: Long): ApplicationUser {
+		return applicationUserRepository.findByIdOrNull(userId)
+			?: throw java.lang.IllegalStateException("User by id not found")
+	}
+
+	fun getLoggedUserId(): Long {
+		return getByUsername(authenticationFacade.getUserName()).id
+			?: throw java.lang.IllegalStateException("Logged user is not found")
+	}
 
 	override fun addUser(userDto: UserDto): UserDto {
 		val user = userDto.toEntityClass()

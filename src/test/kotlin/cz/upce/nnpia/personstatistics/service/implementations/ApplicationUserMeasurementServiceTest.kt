@@ -3,9 +3,8 @@ package cz.upce.nnpia.personstatistics
 import cz.upce.nnpia.personstatistics.dto.UserMeasurementIntervalDto
 import cz.upce.nnpia.personstatistics.repository.ApplicationUserRepository
 import cz.upce.nnpia.personstatistics.repository.UserMeasurementRepository
+import cz.upce.nnpia.personstatistics.repository.UserPhotoRepository
 import cz.upce.nnpia.personstatistics.service.implementations.UserMeasurementService
-import cz.upce.nnpia.personstatistics.service.implementations.UserMediaService
-import cz.upce.nnpia.personstatistics.service.implementations.UserService
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
@@ -13,7 +12,6 @@ import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.context.annotation.ComponentScan
-import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ActiveProfiles
 
 @SpringBootTest
@@ -25,22 +23,20 @@ class ApplicationUserMeasurementServiceTest
 	private val applicationUserRepository: ApplicationUserRepository,
 	private val userMeasurementRepository: UserMeasurementRepository,
 	private val userMeasurementService: UserMeasurementService,
-	private val userService: UserService,
-	private val userMediaService: UserMediaService
+	private val userPhotoRepository: UserPhotoRepository
 ) {
 
 	@BeforeEach
 	fun clean() {
-		applicationUserRepository.deleteAll()
+		userPhotoRepository.deleteAll()
 		userMeasurementRepository.deleteAll()
+		applicationUserRepository.deleteAll()
 	}
 
 	@Test
 	fun addMeasurement() {
 		val person = personalMockGenerator.createPersonal().toEntityClass()
 		applicationUserRepository.save(person)
-		val userMedia = personalMockGenerator.createUserMedia(person.id ?: -1)
-		userMediaService.add(userMedia)
 		val personMeasurement = personalMockGenerator.createPersonalMeasurement()
 		personMeasurement.userId = person.id ?: -1
 		userMeasurementService.add(personMeasurement)
@@ -52,8 +48,6 @@ class ApplicationUserMeasurementServiceTest
 	fun removeMeasurement() {
 		val person = personalMockGenerator.createPersonal().toEntityClass()
 		applicationUserRepository.save(person)
-		val userMedia = personalMockGenerator.createUserMedia(person.id ?: -1)
-		userMediaService.add(userMedia)
 
 		val personMeasurements = listOf(
 			personalMockGenerator.createPersonalMeasurement(),
@@ -82,8 +76,6 @@ class ApplicationUserMeasurementServiceTest
 	fun getAllMeasurements() {
 		val person = personalMockGenerator.createPersonal().toEntityClass()
 		applicationUserRepository.save(person)
-		val userMedia = personalMockGenerator.createUserMedia(person.id ?: -1)
-		userMediaService.add(userMedia)
 
 		val personMeasurements = listOf(
 			personalMockGenerator.createPersonalMeasurement(),
@@ -93,21 +85,19 @@ class ApplicationUserMeasurementServiceTest
 		)
 
 		personMeasurements.forEach { personMeasurement ->
-			personMeasurement.userId = person.id ?: -1
+			personMeasurement.userId = person.id
 			userMeasurementService.add(personMeasurement)
 		}
 
 		val foundMeasurement = userMeasurementService.getAll(person.id ?: -1)
 
-		assertTrue(personMeasurements.map { it.leftHandSize }.containsAll(foundMeasurement.map { it.leftHandSize }))
+		assertTrue(foundMeasurement.map { it.leftHandSize }.containsAll(personMeasurements.map { it.leftHandSize }))
 	}
 
 	@Test
 	fun getMeasurementsByInterval() {
 		val person = personalMockGenerator.createPersonal().toEntityClass()
 		applicationUserRepository.save(person)
-		val userMedia = personalMockGenerator.createUserMedia(person.id ?: -1)
-		userMediaService.add(userMedia)
 
 		val startDate = personalMockGenerator.createLocalDateTimeFromString("2004-31-12 23:59")
 		val endDate = personalMockGenerator.createLocalDateTimeFromString("2015-01-01 00:01")
@@ -139,12 +129,12 @@ class ApplicationUserMeasurementServiceTest
 			)
 		)
 
-		assertTrue(testedPersonMeasurements.map { it.leftHandSize }
-			.containsAll(foundMeasurement.map { it.leftHandSize }))
+		assertTrue(foundMeasurement.map { it.leftHandSize }
+			.containsAll(testedPersonMeasurements.map { it.leftHandSize }))
 
 		val foundMeasurementNone = userMeasurementService.getMeasurementsByInterval(
 			UserMeasurementIntervalDto(
-				person.id ?: -1,
+				-1,
 				startDate,
 				endDate
 			)

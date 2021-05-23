@@ -12,5 +12,10 @@ interface UserMeasurementRepository : JpaRepository<UserMeasurement, Long> {
 	fun findByApplicationUserId(id: Long): List<UserMeasurement>
 
 	@Query("SELECT u from UserMeasurement u where u.applicationUser.id =:userId and u.timeStamp between :start and :end")
-	fun findByApplicationUserAndInterval(userId: Long?, start: LocalDateTime?, end: LocalDateTime?): List<UserMeasurement>
+	fun findByApplicationUserAndInterval(
+		userId: Long?,
+		start: LocalDateTime?,
+		end: LocalDateTime?
+	): List<UserMeasurement>
+
 }
