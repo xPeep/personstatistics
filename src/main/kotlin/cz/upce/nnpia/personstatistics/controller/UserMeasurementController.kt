@@ -7,23 +7,47 @@ import cz.upce.nnpia.personstatistics.service.implementations.UserService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.util.concurrent.ThreadLocalRandom
 
 @RestController
 @RequestMapping("api/measurement")
-@CrossOrigin("*")
 class UserMeasurementController
 @Autowired constructor(
 	private val userMeasurementService: UserMeasurementService,
 	private val userService: UserService
 ) {
 
+	fun getRandomTime(): LocalDateTime {
+		val minDay = LocalDate.of(2019, 1, 1).toEpochDay()
+		val maxDay = LocalDate.of(2021, 5, 29).toEpochDay()
+		val randomDay = ThreadLocalRandom.current().nextLong(minDay, maxDay)
+		return LocalDate.ofEpochDay(randomDay).atStartOfDay()
+	}
+
+	fun createPersonalMeasurement(): UserMeasurementDto {
+		return UserMeasurementDto(
+			null,
+			getRandomTime(),
+			(40..100).random().toDouble(),
+			(15..60).random().toDouble(),
+			(15..60).random().toDouble(),
+			(15..60).random().toDouble(),
+			(15..60).random().toDouble(),
+			(15..60).random().toDouble(),
+			(15..60).random().toDouble(),
+		)
+	}
+
 	@ExceptionHandler(RuntimeException::class)
 	fun handleException(): String = "error"
 
 	@PostMapping
 	@PreAuthorize("hasRole('ROLE_USER')")
-	fun add(@RequestBody userMeasurementDto: UserMeasurementDto) {
-		userMeasurementService.add(userMeasurementDto)
+	fun add(@RequestBody userMeasurementDto: UserMeasurementDto): UserMeasurementDto {
+		userMeasurementDto.userId = userService.getLoggedUserId()
+		return userMeasurementService.add(userMeasurementDto)
 	}
 
 	@DeleteMapping("/{measurementId}")
@@ -35,12 +59,18 @@ class UserMeasurementController
 	@GetMapping
 	@PreAuthorize("hasRole('ROLE_USER')")
 	fun all(): List<UserMeasurementDto> {
+		/*for (x in 1..1000) {
+			val data = createPersonalMeasurement()
+			data.userId = userService.getLoggedUserId()
+			userMeasurementService.add(data)
+		}*/
 		return userMeasurementService.getAll(userService.getLoggedUserId())
 	}
 
-	@GetMapping("/interval")
+	@PostMapping("/interval")
 	@PreAuthorize("hasRole('ROLE_USER')")
 	fun interval(@RequestBody userMeasurementIntervalDto: UserMeasurementIntervalDto): List<UserMeasurementDto> {
+		userMeasurementIntervalDto.userId = userService.getLoggedUserId()
 		return userMeasurementService.getMeasurementsByInterval(userMeasurementIntervalDto)
 	}
 

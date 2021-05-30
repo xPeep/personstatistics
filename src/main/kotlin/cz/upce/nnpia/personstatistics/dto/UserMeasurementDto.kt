@@ -5,14 +5,14 @@ import cz.upce.nnpia.personstatistics.entity.UserMeasurement
 import java.time.LocalDateTime
 
 data class UserMeasurementDto(
-	val id: Long? = null,
+	var id: Long? = null,
 	val timestamp: LocalDateTime,
 	val weight: Double?,
 	val abdomenSize: Double?,
 	val leftHandSize: Double?,
 	val rightHandSize: Double?,
-	val rightLeftSize: Double?,
-	val rightRightSize: Double?,
+	val leftLegSize: Double?,
+	val rightLegSize: Double?,
 	val chestSize: Double?,
 	var userId: Long? = null
 ) {
@@ -23,8 +23,8 @@ data class UserMeasurementDto(
 			this.abdomenSize,
 			this.leftHandSize,
 			this.rightHandSize,
-			this.rightLeftSize,
-			this.rightRightSize,
+			this.leftLegSize,
+			this.rightLegSize,
 			this.chestSize,
 			applicationUser
 		)

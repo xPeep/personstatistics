@@ -55,8 +55,14 @@ class UserService
 	}
 
 	override fun loadUserByUsername(username: String): UserDetails {
-		val userDetails = applicationUserRepository.findByNickname(username)
-			?: throw IllegalStateException("User by username not found")
+		val userDetails = if (username.contains("@")) {
+			applicationUserRepository.findByEmailAddress(username)
+				?: throw IllegalStateException("User by email not found")
+		} else {
+			applicationUserRepository.findByNickname(username)
+				?: throw IllegalStateException("User by username not found")
+		}
+
 		userDetails.userPassword = passwordEncoder.encode(userDetails.password)
 		return userDetails
 	}

@@ -23,7 +23,7 @@ class ApplicationUser(
 		mappedBy = "id",
 		cascade = [CascadeType.ALL],
 		orphanRemoval = true
-	) var userPhoto: MutableList<UserPhoto>,
+	) var userPhotos: MutableList<UserPhoto>,
 ) : AbstractJpaPersistable<Long>(), UserDetails {
 
 	fun toDtoClass(): UserDto {
@@ -35,7 +35,7 @@ class ApplicationUser(
 			this.lastName,
 			this.emailAddress,
 			this.role,
-			this.userPhoto,
+			this.userPhotos,
 			this.userMeasurement
 		)
 	}

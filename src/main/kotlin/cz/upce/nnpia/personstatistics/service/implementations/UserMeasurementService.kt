@@ -14,9 +14,11 @@ class UserMeasurementService
 	private val userService: UserService
 ) : IUserMeasurementService {
 
-	override fun add(userMeasurementDto: UserMeasurementDto) {
+	override fun add(userMeasurementDto: UserMeasurementDto): UserMeasurementDto {
 		val user = userService.getUserById(userMeasurementDto.userId ?: -1)
-		userMeasurementRepository.save(userMeasurementDto.toEntityClass(user))
+		val entityMeasurement = userMeasurementDto.toEntityClass(user)
+		userMeasurementRepository.save(entityMeasurement)
+		return entityMeasurement.toDtoClass()
 	}
 
 	override fun removeById(userMeasurementId: Long) {

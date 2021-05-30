@@ -12,20 +12,20 @@ data class UserDto(
 	val firstName: String,
 	val lastName: String,
 	val emailAddress: String,
-	var role: UserRole,
-	val userPhoto: MutableList<UserPhoto>,
-	val userMeasurement: MutableList<UserMeasurement>,
+	var role: UserRole?,
+	val userPhoto: MutableList<UserPhoto>?,
+	val userMeasurement: MutableList<UserMeasurement>?,
 ) {
 	fun toEntityClass(): ApplicationUser {
 		return ApplicationUser(
 			this.username,
 			this.password,
-			this.role,
+			this.role ?: UserRole.USER,
 			this.firstName,
 			this.lastName,
 			this.emailAddress,
-			this.userMeasurement,
-			this.userPhoto
+			this.userMeasurement ?: mutableListOf(),
+			this.userPhoto ?: mutableListOf()
 		)
 	}
 }

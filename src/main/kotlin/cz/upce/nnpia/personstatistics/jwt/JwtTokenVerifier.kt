@@ -25,14 +25,10 @@ class JwtTokenVerifier(
 	) {
 		val authorizationHeader = request.getHeader(jwtConfig.getAuthorizationHeader())
 
-		if (!Strings.isNullOrEmpty(authorizationHeader) && authorizationHeader.startsWith(
-				jwtConfig.tokenPrefix ?: throw IllegalStateException("Token prefix not found.")
-			)
+		if (!Strings.isNullOrEmpty(authorizationHeader) && authorizationHeader.startsWith(jwtConfig.tokenPrefix)
 		) {
 
-			val token = authorizationHeader.replace(
-				jwtConfig.tokenPrefix ?: throw IllegalStateException("Token prefix not found."), ""
-			)
+			val token = authorizationHeader.replace(jwtConfig.tokenPrefix, "")
 
 			try {
 

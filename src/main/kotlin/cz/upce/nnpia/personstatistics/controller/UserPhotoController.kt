@@ -12,7 +12,6 @@ import java.time.LocalDateTime
 
 @RestController
 @RequestMapping("api/media")
-@CrossOrigin("*")
 class UserPhotoController
 @Autowired constructor(
 	private val userPhotoService: UserPhotoService,

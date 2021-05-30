@@ -1,0 +1,43 @@
+<configuration>
+    <appender name="APPLICATION_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>logs/app.log</file>
+        <encoder>
+            <pattern>%date %level [%thread] %C{1.}:%line: %msg%n</pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>logs/app-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <maxFileSize>10MB</maxFileSize>
+            <maxHistory>5</maxHistory>
+        </rollingPolicy>
+    </appender>
+
+    <appender name="SECURITY_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>logs/security.log</file>
+        <encoder>
+            <pattern>%date %level [%thread] %C{1.}:%line: %msg%n</pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>logs/security-%d{yyyy-MM-dd}.%i.txt</fileNamePattern>
+            <maxFileSize>10MB</maxFileSize>
+            <maxHistory>5</maxHistory>
+        </rollingPolicy>
+    </appender>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%black(%d{ISO8601}) %highlight(%-5level) [%blue(%t)] %green(%C{1.}:%line:) %msg%n%throwable</pattern>
+        </encoder>
+    </appender>
+
+    <logger name="APPLICATION" level="info">
+        <appender-ref ref="APPLICATION_FILE" />
+    </logger>
+
+    <logger name="SECURITY" level="info">
+        <appender-ref ref="SECURITY_FILE" />
+    </logger>
+
+    <root level="info">
+        <appender-ref ref="STDOUT" />
+    </root>
+</configuration>

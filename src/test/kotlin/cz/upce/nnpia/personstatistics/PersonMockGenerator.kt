@@ -6,8 +6,10 @@ import cz.upce.nnpia.personstatistics.dto.UserPhotoDto
 import cz.upce.nnpia.personstatistics.security.UserRole
 import org.springframework.stereotype.Component
 import java.lang.Math.random
+import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import java.util.concurrent.ThreadLocalRandom
 import kotlin.math.roundToInt
 
 
@@ -41,10 +43,17 @@ class PersonMockGenerator {
 		return UserPhotoDto(id, LocalDateTime.now(), generateName(5))
 	}
 
+	fun getRandomTime():LocalDateTime{
+		val minDay = LocalDate.of(2019, 1, 1).toEpochDay()
+		val maxDay = LocalDate.of(2021, 5, 29).toEpochDay()
+		val randomDay = ThreadLocalRandom.current().nextLong(minDay, maxDay)
+		return LocalDate.ofEpochDay(randomDay).atStartOfDay()
+	}
+
 	fun createPersonalMeasurement(): UserMeasurementDto {
 		return UserMeasurementDto(
 			null,
-			LocalDateTime.now(),
+			getRandomTime(),
 			random().roundToInt().toDouble(),
 			random().roundToInt().toDouble(),
 			random().roundToInt().toDouble(),

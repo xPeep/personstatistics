@@ -8,10 +8,10 @@ import java.time.LocalDateTime
 
 interface UserMeasurementRepository : JpaRepository<UserMeasurement, Long> {
 
-	@Query("SELECT u from UserMeasurement u where u.applicationUser.id=:id")
+	@Query("SELECT u from UserMeasurement u where u.applicationUser.id=:id order by u.timeStamp")
 	fun findByApplicationUserId(id: Long): List<UserMeasurement>
 
-	@Query("SELECT u from UserMeasurement u where u.applicationUser.id =:userId and u.timeStamp between :start and :end")
+	@Query("SELECT u from UserMeasurement u where u.applicationUser.id =:userId and u.timeStamp between :start and :end order by u.timeStamp")
 	fun findByApplicationUserAndInterval(
 		userId: Long?,
 		start: LocalDateTime?,

@@ -6,6 +6,7 @@ import cz.upce.nnpia.personstatistics.jwt.JwtUsernameAndPasswordAuthenticationFi
 import cz.upce.nnpia.personstatistics.service.implementations.UserService
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.http.HttpMethod
 import org.springframework.http.HttpStatus
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
@@ -19,6 +20,8 @@ import org.springframework.security.web.authentication.HttpStatusEntryPoint
 import org.springframework.web.cors.CorsConfiguration
 import org.springframework.web.cors.CorsConfigurationSource
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource
+import org.springframework.web.filter.CorsFilter
+import java.util.*
 import javax.crypto.SecretKey
 
 @Configuration
@@ -40,19 +43,17 @@ class ApplicationSecurityConfig(
 			.and()
 			.addFilter(JwtUsernameAndPasswordAuthenticationFilter(authenticationManager(), jwtConfig, secretKey))
 			.addFilterAfter(
-				JwtTokenVerifier(secretKey, jwtConfig),
-				JwtUsernameAndPasswordAuthenticationFilter::class.java
+				JwtTokenVerifier(secretKey, jwtConfig), JwtUsernameAndPasswordAuthenticationFilter::class.java
 			)
 			.authorizeRequests()
-			.antMatchers("/", "index", "/css/*", "/js/*", "/api/user/add").permitAll()
-			//.antMatchers("/api/**").hasRole(ApplicationUserRole.USER.name)
+			.antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+			.antMatchers("/api/**").permitAll()
 			.anyRequest()
 			.authenticated()
 			.and()
 			.exceptionHandling()
 			.authenticationEntryPoint(HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
 	}
-
 
 	@Throws(Exception::class)
 	override fun configure(auth: AuthenticationManagerBuilder) {
@@ -63,8 +64,11 @@ class ApplicationSecurityConfig(
 	fun corsConfigurationSource(): CorsConfigurationSource {
 		val source = UrlBasedCorsConfigurationSource()
 		val config = CorsConfiguration()
-		source.registerCorsConfiguration("/**", config.applyPermitDefaultValues())
+		config.addAllowedOrigin("*")
+		config.allowedMethods = listOf("POST", "OPTIONS", "GET", "DELETE", "PUT")
+		config.allowedHeaders = listOf("*")
 		config.exposedHeaders = listOf("Authorization")
+		source.registerCorsConfiguration("/**", config)
 		return source
 	}
 

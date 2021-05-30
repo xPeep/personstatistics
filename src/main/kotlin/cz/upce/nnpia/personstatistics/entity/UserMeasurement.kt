@@ -2,7 +2,6 @@ package cz.upce.nnpia.personstatistics.entity
 
 import cz.upce.nnpia.personstatistics.dto.UserMeasurementDto
 import cz.upce.nnpia.personstatistics.repository.AbstractJpaPersistable
-import org.hibernate.annotations.UpdateTimestamp
 import java.time.LocalDateTime
 import javax.persistence.Column
 import javax.persistence.Entity
@@ -16,8 +15,8 @@ class UserMeasurement(
 	@Column(nullable = true) var abdomenSize: Double?,
 	@Column(nullable = true) var leftHandSize: Double?,
 	@Column(nullable = true) var rightHandSize: Double?,
-	@Column(nullable = true) var rightLeftSize: Double?,
-	@Column(nullable = true) var rightRightSize: Double?,
+	@Column(nullable = true) var leftLegSize: Double?,
+	@Column(nullable = true) var rightLegSize: Double?,
 	@Column(nullable = true) var chestSize: Double?,
 	@ManyToOne(fetch = FetchType.LAZY) var applicationUser: ApplicationUser? = null
 ) : AbstractJpaPersistable<Long>() {
@@ -30,8 +29,8 @@ class UserMeasurement(
 			this.abdomenSize,
 			this.leftHandSize,
 			this.rightHandSize,
-			this.rightLeftSize,
-			this.rightRightSize,
+			this.leftLegSize,
+			this.rightLegSize,
 			this.chestSize,
 			this.applicationUser?.id
 		)

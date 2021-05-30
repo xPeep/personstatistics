@@ -5,4 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository
 
 interface ApplicationUserRepository : JpaRepository<ApplicationUser, Long> {
 	fun findByNickname(nickname: String): ApplicationUser?
+	fun findByEmailAddress(nickname: String): ApplicationUser?
 }
