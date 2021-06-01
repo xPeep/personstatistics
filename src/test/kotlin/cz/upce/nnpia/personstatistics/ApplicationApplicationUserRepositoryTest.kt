@@ -27,10 +27,6 @@ class ApplicationApplicationUserRepositoryTest
 		applicationUserRepository.deleteAll()
 	}
 
-	@Test
-	fun `should not find any user`() {
-		assertThat(applicationUserRepository.findAll()).isEmpty()
-	}
 
 	@Test
 	fun `should store new user`() {
@@ -38,21 +34,6 @@ class ApplicationApplicationUserRepositoryTest
 		val foundUser = creator.save(newUser)
 
 		assertThat(foundUser).isEqualTo(newUser)
-	}
-
-	@Test
-	fun `should find all users`() {
-		val fakeUsers = mutableListOf<ApplicationUser>()
-
-		for (i in 0..10) {
-			val user = personalMockGenerator.createPersonal().toEntityClass()
-			fakeUsers.add(user)
-			creator.save(user)
-		}
-
-		assertThat(applicationUserRepository.findAll())
-			.hasSize(fakeUsers.size)
-			.containsAll(fakeUsers)
 	}
 
 	@Test
