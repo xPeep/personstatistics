@@ -53,7 +53,7 @@ class LogRegSeleniumTest
 	}
 
 	fun getOrigin(): String {
-		return "http://localhost:3000"
+		return "https://personal-statistics.herokuapp.com"
 	}
 
 	fun getOriginS(): String {

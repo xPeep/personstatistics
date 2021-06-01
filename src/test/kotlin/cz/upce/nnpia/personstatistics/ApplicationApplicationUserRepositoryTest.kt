@@ -3,6 +3,7 @@ package cz.upce.nnpia.personstatistics
 import cz.upce.nnpia.personstatistics.entity.ApplicationUser
 import cz.upce.nnpia.personstatistics.repository.ApplicationUserRepository
 import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
@@ -20,6 +21,11 @@ class ApplicationApplicationUserRepositoryTest
 	private val applicationUserRepository: ApplicationUserRepository,
 	private val personalMockGenerator: PersonMockGenerator
 ) {
+
+	@BeforeEach
+	fun clean() {
+		applicationUserRepository.deleteAll()
+	}
 
 	@Test
 	fun `should not find any user`() {
