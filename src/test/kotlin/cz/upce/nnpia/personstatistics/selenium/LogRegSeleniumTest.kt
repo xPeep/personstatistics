@@ -1,16 +1,19 @@
 package cz.upce.nnpia.personstatistics
 
+import cz.upce.eshop.ui.TestImplementation
 import cz.upce.nnpia.personstatistics.repository.ApplicationUserRepository
 import org.junit.Assert
 import org.junit.jupiter.api.*
 import org.openqa.selenium.By
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.chrome.ChromeDriver
+import org.openqa.selenium.chrome.ChromeOptions
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.web.server.LocalServerPort
 import org.springframework.context.annotation.ComponentScan
 import org.springframework.test.context.ActiveProfiles
+import java.io.File
 
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -32,16 +35,28 @@ class LogRegSeleniumTest
 
 	@BeforeAll
 	fun setupWebdriverChromeDriver() {
-		val chromeDriverPath = LogRegSeleniumTest::class.java.getResource("/chromedriver.exe").file
-		System.setProperty(
-			"webdriver.chrome.driver",
-			chromeDriverPath
-		)
+		val chromeDriverPath = TestImplementation::class.java.getResource("/chromedriver.exe").file
+		val circleCIChromedriverPath = "/usr/local/bin/chromedriver"
+
+		if(File(circleCIChromedriverPath).exists()){
+			System.setProperty(
+				"webdriver.chrome.driver",
+				circleCIChromedriverPath
+			)
+		}else{
+			System.setProperty(
+				"webdriver.chrome.driver",
+				chromeDriverPath
+			)
+		}
 	}
 
 	@BeforeEach
 	fun setup() {
-		driver = ChromeDriver()
+		val chromeOptions = ChromeOptions()
+		chromeOptions.setHeadless(true)
+
+		driver = ChromeDriver(chromeOptions)
 		applicationUserRepository.deleteAll()
 	}
 

@@ -5,6 +5,8 @@ import org.hamcrest.MatcherAssert.assertThat
 import org.junit.jupiter.api.*
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.chrome.ChromeDriver
+import org.openqa.selenium.chrome.ChromeOptions
+import java.io.File
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class TestImplementation {
@@ -13,15 +15,26 @@ class TestImplementation {
 	@BeforeAll
 	fun setupWebdriverChromeDriver() {
 		val chromeDriverPath = TestImplementation::class.java.getResource("/chromedriver.exe").file
-		System.setProperty(
-			"webdriver.chrome.driver",
-			chromeDriverPath
-		)
+		val circleCIChromedriverPath = "/usr/local/bin/chromedriver"
+
+		if(File(circleCIChromedriverPath).exists()){
+			System.setProperty(
+				"webdriver.chrome.driver",
+				circleCIChromedriverPath
+			)
+		}else{
+			System.setProperty(
+				"webdriver.chrome.driver",
+				chromeDriverPath
+			)
+		}
 	}
 
 	@BeforeEach
 	fun setup() {
-		driver = ChromeDriver()
+		val chromeOptions = ChromeOptions()
+		chromeOptions.setHeadless(true)
+		driver = ChromeDriver(chromeOptions)
 	}
 
 	@AfterEach
