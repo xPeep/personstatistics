@@ -129,8 +129,8 @@ class ApplicationUserMeasurementServiceTest
 			)
 		)
 
-		assertTrue(foundMeasurement.map { it.leftHandSize }
-			.containsAll(testedPersonMeasurements.map { it.leftHandSize }))
+		assertTrue(foundMeasurement.map { it.timestamp }
+			.containsAll(testedPersonMeasurements.map { it.timestamp }))
 
 		val foundMeasurementNone = userMeasurementService.getMeasurementsByInterval(
 			UserMeasurementIntervalDto(

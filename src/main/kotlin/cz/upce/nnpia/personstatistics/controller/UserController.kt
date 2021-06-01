@@ -67,7 +67,7 @@ class UserController
 	fun get(): GetUserDto? {
 		logger.info("Get user..ROLE_USER and ROLE_ADMIN")
 		val user = userService.getById(userService.getLoggedUserId())
-		return GetUserDto(user.id, user.username, user.firstName, user.lastName, user.emailAddress)
+		return GetUserDto(user.id, user.username, user.password, user.firstName, user.lastName, user.emailAddress)
 	}
 
 	@GetMapping("/all")

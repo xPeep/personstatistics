@@ -24,7 +24,7 @@ class UserPhotoController
 
 	@PostMapping
 	@PreAuthorize("hasRole('ROLE_USER')")
-	fun add(@RequestBody multipartFile: MultipartFile) {
+	fun add(@RequestParam("file") multipartFile: MultipartFile) {
 		val path = fileService.upload(multipartFile)
 		userPhotoService.add(UserPhotoDto(null, LocalDateTime.now(), path, userService.getLoggedUserId()))
 	}

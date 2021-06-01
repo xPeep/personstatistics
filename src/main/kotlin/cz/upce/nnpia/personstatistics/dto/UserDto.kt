@@ -17,7 +17,7 @@ data class UserDto(
 	val userMeasurement: MutableList<UserMeasurement>?,
 ) {
 	fun toEntityClass(): ApplicationUser {
-		return ApplicationUser(
+		val user= ApplicationUser(
 			this.username,
 			this.password,
 			this.role ?: UserRole.USER,
@@ -27,5 +27,7 @@ data class UserDto(
 			this.userMeasurement ?: mutableListOf(),
 			this.userPhoto ?: mutableListOf()
 		)
+		user.id = this.id
+		return user
 	}
 }

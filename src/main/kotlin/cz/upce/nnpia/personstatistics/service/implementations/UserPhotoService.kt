@@ -27,4 +27,8 @@ class UserPhotoService
 		return userPhotoRepository.findByApplicationUserId(userId).map { it.toDtoClass() }
 	}
 
+	fun get(loggedUserId: Long): UserPhotoDto{
+		return getAll(loggedUserId).first()
+	}
+
 }
