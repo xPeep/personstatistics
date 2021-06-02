@@ -19,27 +19,6 @@ class UserMeasurementController
 	private val userService: UserService
 ) {
 
-	fun getRandomTime(): LocalDateTime {
-		val minDay = LocalDate.of(2019, 1, 1).toEpochDay()
-		val maxDay = LocalDate.of(2021, 5, 29).toEpochDay()
-		val randomDay = ThreadLocalRandom.current().nextLong(minDay, maxDay)
-		return LocalDate.ofEpochDay(randomDay).atStartOfDay()
-	}
-
-	fun createPersonalMeasurement(): UserMeasurementDto {
-		return UserMeasurementDto(
-			null,
-			getRandomTime(),
-			(40..100).random().toDouble(),
-			(15..60).random().toDouble(),
-			(15..60).random().toDouble(),
-			(15..60).random().toDouble(),
-			(15..60).random().toDouble(),
-			(15..60).random().toDouble(),
-			(15..60).random().toDouble(),
-		)
-	}
-
 	@ExceptionHandler(RuntimeException::class)
 	fun handleException(): String = "error"
 
@@ -59,11 +38,6 @@ class UserMeasurementController
 	@GetMapping
 	@PreAuthorize("hasRole('ROLE_USER')")
 	fun all(): List<UserMeasurementDto> {
-		/*for (x in 1..1000) {
-			val data = createPersonalMeasurement()
-			data.userId = userService.getLoggedUserId()
-			userMeasurementService.add(data)
-		}*/
 		return userMeasurementService.getAll(userService.getLoggedUserId())
 	}
 
