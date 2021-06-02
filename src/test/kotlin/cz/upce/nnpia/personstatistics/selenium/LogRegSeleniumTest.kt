@@ -87,7 +87,9 @@ class LogRegSeleniumTest
 
 		wait.until(ExpectedConditions.urlContains(getOrigin() + "/profile"))
 
-		for (x in 0..5) {
+
+		driver?.findElement(By.id("firstName")).clear()
+		for (x in 0..30) {
 			driver?.findElement(By.id("firstName")).sendKeys(Keys.BACK_SPACE);
 		}
 
