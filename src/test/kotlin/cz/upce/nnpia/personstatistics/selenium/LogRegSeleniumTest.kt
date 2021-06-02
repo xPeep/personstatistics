@@ -90,6 +90,7 @@ class LogRegSeleniumTest
 		for (x in 0..5) {
 			driver?.findElement(By.id("firstName")).sendKeys(Keys.BACK_SPACE);
 		}
+
 		driver?.findElement(By.id("firstName")).sendKeys("Karel")
 
 		driver?.findElement(By.xpath("//button[@id='saveProfileDataButton']"))?.click()
