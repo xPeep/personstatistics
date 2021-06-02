@@ -7,9 +7,6 @@ import cz.upce.nnpia.personstatistics.service.implementations.UserService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
-import java.time.LocalDate
-import java.time.LocalDateTime
-import java.util.concurrent.ThreadLocalRandom
 
 @RestController
 @RequestMapping("api/measurement")

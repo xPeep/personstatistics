@@ -2,7 +2,6 @@ package cz.upce.nnpia.personstatistics.entity
 
 import cz.upce.nnpia.personstatistics.dto.UserPhotoDto
 import cz.upce.nnpia.personstatistics.repository.AbstractJpaPersistable
-import org.hibernate.annotations.UpdateTimestamp
 import java.time.LocalDateTime
 import javax.persistence.Column
 import javax.persistence.Entity

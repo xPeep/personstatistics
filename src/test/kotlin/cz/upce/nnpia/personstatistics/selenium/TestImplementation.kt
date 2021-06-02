@@ -17,12 +17,12 @@ class TestImplementation {
 		val chromeDriverPath = TestImplementation::class.java.getResource("/chromedriver.exe").file
 		val circleCIChromedriverPath = "/usr/local/bin/chromedriver"
 
-		if(File(circleCIChromedriverPath).exists()){
+		if (File(circleCIChromedriverPath).exists()) {
 			System.setProperty(
 				"webdriver.chrome.driver",
 				circleCIChromedriverPath
 			)
-		}else{
+		} else {
 			System.setProperty(
 				"webdriver.chrome.driver",
 				chromeDriverPath

@@ -1,6 +1,5 @@
 package cz.upce.nnpia.personstatistics
 
-import cz.upce.nnpia.personstatistics.entity.ApplicationUser
 import cz.upce.nnpia.personstatistics.repository.ApplicationUserRepository
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach

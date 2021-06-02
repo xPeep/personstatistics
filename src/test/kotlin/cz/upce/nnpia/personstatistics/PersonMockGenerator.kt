@@ -43,7 +43,7 @@ class PersonMockGenerator {
 		return UserPhotoDto(id, LocalDateTime.now(), generateName(5))
 	}
 
-	fun getRandomTime():LocalDateTime{
+	fun getRandomTime(): LocalDateTime {
 		val minDay = LocalDate.of(2019, 1, 1).toEpochDay()
 		val maxDay = LocalDate.of(2021, 5, 29).toEpochDay()
 		val randomDay = ThreadLocalRandom.current().nextLong(minDay, maxDay)

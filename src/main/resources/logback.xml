@@ -25,19 +25,20 @@
 
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
-            <pattern>%black(%d{ISO8601}) %highlight(%-5level) [%blue(%t)] %green(%C{1.}:%line:) %msg%n%throwable</pattern>
+            <pattern>%black(%d{ISO8601}) %highlight(%-5level) [%blue(%t)] %green(%C{1.}:%line:) %msg%n%throwable
+            </pattern>
         </encoder>
     </appender>
 
     <logger name="APPLICATION" level="info">
-        <appender-ref ref="APPLICATION_FILE" />
+        <appender-ref ref="APPLICATION_FILE"/>
     </logger>
 
     <logger name="SECURITY" level="info">
-        <appender-ref ref="SECURITY_FILE" />
+        <appender-ref ref="SECURITY_FILE"/>
     </logger>
 
     <root level="info">
-        <appender-ref ref="STDOUT" />
+        <appender-ref ref="STDOUT"/>
     </root>
 </configuration>
