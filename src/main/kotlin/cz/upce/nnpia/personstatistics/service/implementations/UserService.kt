@@ -37,7 +37,7 @@ class UserService
 	}
 
 	override fun removeById(id: Long) {
-		//applicationUserRepository.deleteById(id)
+		applicationUserRepository.deleteById(id)
 	}
 
 	override fun getById(id: Long): UserDto {
